@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ItexBlog</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="body_message">Life is beautiful, its beautiful. Enjoy it! \nLife is beautiful, its beautiful. Enjoy it!
+        Life is beautiful, its beautiful. Enjoy it! \nLife is beautiful, its beautiful. Enjoy it!
+        Life is beautiful, its beautiful. Enjoy it! \nLife is beautiful, its beautiful. Enjoy it!
+
+    </string>
+    <string name="like_btn">Like button</string>
+    <string name="delete_btn">Delete button</string>
+    <string name="edit_btn">Edit button</string>
+    <string name="comments"><u>comments</u></string>
 </resources>
