@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.BindingAdapter
+import androidx.databinding.adapters.AdapterViewBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostEntity
@@ -12,11 +14,11 @@ import org.w3c.dom.Text
 
 class PostAdapter:RecyclerView.Adapter<PostAdapter.PostHolder>() {
 
+
     private var posts:List<PostEntity> = ArrayList()
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_row, parent, false)
+
         return PostHolder(itemView)
     }
 
@@ -37,9 +39,10 @@ class PostAdapter:RecyclerView.Adapter<PostAdapter.PostHolder>() {
         holder.num_of_likes.text = currentPost.likes.toString()
 
         if(currentPost.image == null){
-            holder.post_image.visibility == View.GONE
+            holder.post_image.visibility = View.GONE
+            holder.divider2.visibility = View.GONE
         }else{
-            currentPost.image?.let {
+            currentPost.image.let {
                 holder.post_image.setImageResource(it)
             }
         }
@@ -48,12 +51,15 @@ class PostAdapter:RecyclerView.Adapter<PostAdapter.PostHolder>() {
 
     }
 
+
+
     class PostHolder(view: View) : RecyclerView.ViewHolder(view){
         var title = view.findViewById<TextView>(R.id.post_title)
         var body = view.findViewById<TextView>(R.id.post_body)
         var post_image = view.findViewById<ImageView>(R.id.post_image)
         var num_of_likes = view.findViewById<TextView>(R.id.num_of_likes)
         var post_date =view.findViewById<TextView>(R.id.post_date)
+        var divider2 = view.findViewById<View>(R.id.divider2)
     }
 
 }

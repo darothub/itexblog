@@ -53,12 +53,23 @@ class BlogActivitiesFragment : Fragment() {
                 """I have been a fan of ManchesterUnited for decades
                     I have been a fan of ManchesterUnited for decades
                     I have been a fan of ManchesterUnited for decades
-                """.trim().trimMargin(), null, 3, currentDate
+                """.trim().trimMargin(), null, currentDate
             )
 
+        val post2 = PostEntity("The news",
+            """I have been a fan of ManchesterUnited for years
+                    I have been a fan of ManchesterUnited for years
+                    I have been a fan of ManchesterUnited for years
+                """.trim().trimMargin(), R.drawable.imagetest, currentDate
+        )
 
 
-        postViewModel!!.insert(post1, application = Application())
+
+
+        postViewModel!!.insert(post1, Application())
+
+        postViewModel!!.insert(post2, Application())
+//        postViewModel!!.deleteAll(Application())
         postViewModel!!.getAllPosts()?.observe(this, object: Observer<List<PostEntity?>?> {
             override fun onChanged(postEntity: List<PostEntity?>?) {
                 adapter.setPost(postEntity)

@@ -12,7 +12,6 @@ class PostEntity(
     val title: String,
     val body: String,
     val image:Int?,
-    val likes:Int?,
     val date: String?
 
 
@@ -20,6 +19,8 @@ class PostEntity(
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+
+    var likes:Int? = 0
 
 
 
