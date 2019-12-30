@@ -7,16 +7,16 @@ import androidx.room.*
 interface PostDao {
 
     @Insert
-    fun insert(post:PostEntity)
+    suspend fun insert(post:PostEntity)
 
     @Update
-    fun update(post:PostEntity)
+    suspend fun update(post:PostEntity)
 
     @Delete
-    fun delete(post:PostEntity)
+    suspend fun delete(post:PostEntity)
 
     @Query("DELETE FROM postentity")
-    fun deleteAllPosts()
+    suspend fun deleteAllPosts()
 
     @get:Query(
         "SELECT * FROM postentity"

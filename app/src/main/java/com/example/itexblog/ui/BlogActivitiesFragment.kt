@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.itexblog.R
@@ -39,6 +41,12 @@ class BlogActivitiesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        //attach nav-controller to the parent view-group
+//        val navController = Navigation.findNavController(post_appbar)
+//
+//        NavigationUI.setupWithNavController(post_toolbar, navController)
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
         val adapter = PostAdapter()
