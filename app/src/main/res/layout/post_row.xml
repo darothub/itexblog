@@ -53,7 +53,7 @@
                 android:layout_below="@id/post_title"
                 android:layout_width="match_parent"
                 android:text="@string/body_message"
-                android:textAlignment="viewEnd"
+                android:textAlignment="viewStart"
                 android:ellipsize="end"
                 android:gravity="start|end"
                 android:justificationMode="inter_word"

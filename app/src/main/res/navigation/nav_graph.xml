@@ -12,11 +12,23 @@
         tools:layout="@layout/fragment_blog_activities" >
         <action
             android:id="@+id/toAddPost"
-            app:destination="@id/addPostFragment" />
+            app:destination="@id/addPostFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_enter_anim" />
+        <argument
+            android:name="post"
+            app:argType="com.example.itexblog.ui.model.PostEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
         android:name="com.example.itexblog.ui.AddPostFragment"
-        android:label="fragment_add_post"
+        android:label="Write a new post"
         tools:layout="@layout/fragment_add_post" />
+    <action
+        android:id="@+id/action_global_blogActivitiesFragment"
+        app:destination="@id/blogActivitiesFragment"
+        app:enterAnim="@anim/nav_default_exit_anim"
+        app:exitAnim="@anim/nav_default_enter_anim" />
 </navigation>

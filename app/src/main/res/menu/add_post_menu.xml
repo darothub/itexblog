@@ -3,16 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-
-        android:title="@string/profile"
-        android:id="@+id/profile"
-        android:tooltipText="@string/profile"
-        app:showAsAction="never"/>
-
-    <item
         android:id="@+id/signOutBtn"
         android:icon="@drawable/ic_more_"
-        android:title="@string/Logout"
+        android:title="@string/exit"
         android:visible="true" />
 
 

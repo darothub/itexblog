@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [PostEntity::class], version = 1, exportSchema = false)
+@Database(entities = [PostEntity::class], version = 2, exportSchema = false)
 abstract class PostDatabase:RoomDatabase() {
 
     abstract fun postDao(): PostDao

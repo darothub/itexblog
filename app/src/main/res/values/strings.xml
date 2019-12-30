@@ -11,6 +11,11 @@
     <string name="like_btn">Like button</string>
     <string name="delete_btn">Delete button</string>
     <string name="edit_btn">Edit button</string>
-    <string name="comments"><u>comments</u></string>
+    <string name="comments"><u>Comments</u></string>
     <string name="action_profile">Profile</string>
+    <string name="Logout">Logout</string>
+    <string name="profile">Profile</string>
+    <string name="exit">Exit</string>
+    <string name="Add_an_image"><u>Add an image</u></string>
+    <string name="TakeAPhoto"><u>Take a phot</u>o</string>
 </resources>

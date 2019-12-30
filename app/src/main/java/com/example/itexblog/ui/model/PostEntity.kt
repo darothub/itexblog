@@ -1,5 +1,7 @@
 package com.example.itexblog.ui.model
 
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
@@ -11,7 +13,7 @@ import java.util.*
 class PostEntity(
     val title: String,
     val body: String,
-    val image:Int?,
+    val image: String?,
     val date: String?
 
 

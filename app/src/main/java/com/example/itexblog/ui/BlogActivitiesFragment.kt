@@ -66,44 +66,35 @@ class BlogActivitiesFragment : Fragment() {
             """I have been a fan of ManchesterUnited for years
                     I have been a fan of ManchesterUnited for years
                     I have been a fan of ManchesterUnited for years
-                """.trim().trimMargin(), R.drawable.imagetest, currentDate
+                """.trim().trimMargin(), null, currentDate
         )
 
 
+        addNewPost()
 
 
-        postViewModel!!.insert(post1, Application())
-
-        postViewModel!!.insert(post2, Application())
-//        postViewModel!!.deleteAll(Application())
+//        postViewModel!!.insert(post1, Application())
+//
+//        postViewModel!!.insert(post2, Application())
+        postViewModel!!.deleteAll(Application())
         postViewModel!!.getAllPosts()?.observe(this, object: Observer<List<PostEntity?>?> {
             override fun onChanged(postEntity: List<PostEntity?>?) {
                 adapter.setPost(postEntity)
-                Toast.makeText(context, "$postEntity", Toast.LENGTH_LONG).show()
+//                Toast.makeText(context, "$postEntity", Toast.LENGTH_LONG).show()
                 Log.i("this class", "$postEntity")
             }
 
         })
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//        inflater.inflate(R.menu.post_menu, menu)
-//
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val id = item.itemId
-//        when(id){
-//            R.id.action_settings -> {
-//                return true
-//            }
-//            R.id.action_info -> {
-//                Toast.makeText(context, "You clicked me", Toast.LENGTH_SHORT).show()
-//                return true
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
+    fun addNewPost(){
+        addFabBtn.setOnClickListener {
+
+            val action = BlogActivitiesFragmentDirections.toAddPost()
+            Navigation.findNavController(it).navigate(action)
+        }
+    }
+
+
 
 }

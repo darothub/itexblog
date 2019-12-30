@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.itexblog.R
 import com.example.itexblog.ui.adapters.PostAdapter
@@ -17,15 +18,22 @@ import kotlinx.android.synthetic.main.fragment_blog_activities.*
 class MainActivity : AppCompatActivity() {
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navController = Navigation.findNavController(this,
+        val navController = Navigation.findNavController(
+            this,
             R.id.fragment
         )
 
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+
+        return NavigationUI.navigateUp(
+            Navigation.findNavController(this, R.id.fragment), null
+        )
     }
 }

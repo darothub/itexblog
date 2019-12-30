@@ -1,12 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.AddPostFragment">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/add_post_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/add_post_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:menu="@menu/add_post_menu" />
 
 
+        </com.google.android.material.appbar.AppBarLayout>
 
-</RelativeLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/title_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_post_appbar"
+            android:layout_marginTop="11dp">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/post_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_input"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="top"
+                android:hint="Body"
+                android:inputType="text|textMultiLine"
+                android:maxLength="200" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/image_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@id/post_input"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_image"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/image_links"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_placeholder"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:weightSum="2"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:id="@+id/addImageBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_image"
+                android:clickable="true"
+                android:focusable="true"/>
+
+
+            <ImageView
+                android:id="@+id/cameraBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_photo_camera"
+                android:clickable="true"
+                android:focusable="true"/>
+
+<!--            <TextView-->
+<!--                android:id="@+id/addImageText"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/Add_an_image"-->
+<!--                android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+
+<!--                />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/take_a_photo"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/TakeAPhoto"-->
+<!--                android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+
+<!--                />-->
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/submit_post_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_links"
+            android:layout_marginTop="10dp"
+            android:height="50dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Post"
+            android:textColor="@color/colorPrimary" />
+
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

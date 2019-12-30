@@ -1,5 +1,6 @@
 package com.example.itexblog.ui.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.databinding.adapters.AdapterViewBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostEntity
+import com.squareup.picasso.Picasso
 import org.w3c.dom.Text
 
 class PostAdapter:RecyclerView.Adapter<PostAdapter.PostHolder>() {
@@ -37,15 +39,20 @@ class PostAdapter:RecyclerView.Adapter<PostAdapter.PostHolder>() {
         holder.body.text = currentPost.body
         holder.post_date.text = currentPost.date
         holder.num_of_likes.text = currentPost.likes.toString()
+        holder.post_image.visibility = View.GONE
+        holder.divider2.visibility = View.GONE
 
-        if(currentPost.image == null){
-            holder.post_image.visibility = View.GONE
-            holder.divider2.visibility = View.GONE
-        }else{
-            currentPost.image.let {
-                holder.post_image.setImageResource(it)
+        val image = currentPost.image
+
+        if(currentPost.image != null){
+            val stringImageToUri = Uri.parse(currentPost.image.toString())
+            stringImageToUri.let {
+                Picasso.get().load(it).into(holder.post_image)
             }
+            holder.post_image.visibility = View.VISIBLE
+            holder.divider2.visibility = View.VISIBLE
         }
+
 
 
 
