@@ -12,4 +12,5 @@
     <string name="delete_btn">Delete button</string>
     <string name="edit_btn">Edit button</string>
     <string name="comments"><u>comments</u></string>
+    <string name="action_profile">Profile</string>
 </resources>
