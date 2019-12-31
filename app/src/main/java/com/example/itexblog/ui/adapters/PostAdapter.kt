@@ -42,6 +42,10 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
         notifyDataSetChanged()
     }
 
+    fun getPostAt(position: Int):PostEntity?{
+        return posts?.get(position)
+    }
+
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
         posts?.let{
             val currentPost = it[position]

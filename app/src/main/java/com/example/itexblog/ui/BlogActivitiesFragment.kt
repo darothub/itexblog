@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.example.itexblog.R
 import com.example.itexblog.ui.adapters.PostAdapter
@@ -28,6 +30,7 @@ import java.util.*
 class BlogActivitiesFragment : Fragment() {
 
     private var postViewModel: PostViewModel?= null
+    private var adapter:PostAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,7 +88,7 @@ class BlogActivitiesFragment : Fragment() {
             override fun onChanged(postEntity: List<PostEntity?>?) {
                 recyclerView.layoutManager = LinearLayoutManager(context)
                 recyclerView.setHasFixedSize(true)
-                val adapter = PostAdapter(postEntity, object: PostAdapter.OnPostListener{
+                adapter = PostAdapter(postEntity, object: PostAdapter.OnPostListener{
                     override fun onPostClick(postEntity: PostEntity?) {
                         view?.let{
                             readPost(postEntity, it)
@@ -99,12 +102,28 @@ class BlogActivitiesFragment : Fragment() {
 
                 })
                 recyclerView.adapter = adapter
-                adapter.setPost(postEntity)
+                adapter?.setPost(postEntity)
 //                Toast.makeText(context, "$postEntity", Toast.LENGTH_LONG).show()
                 Log.i("this class", "$postEntity")
             }
 
         })
+
+        ItemTouchHelper(object :ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                postViewModel?.delete(adapter?.getPostAt(viewHolder.adapterPosition)!!, Application())
+                Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
+            }
+
+        }).attachToRecyclerView(recyclerView)
     }
 
     fun addNewPost(view: View){
