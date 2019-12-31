@@ -69,8 +69,12 @@ class BlogActivitiesFragment : Fragment() {
                 """.trim().trimMargin(), null, currentDate
         )
 
+        addFabBtn.setOnClickListener {
 
-        addNewPost()
+            addNewPost(it)
+        }
+
+
 
 
 //        postViewModel!!.insert(post1, Application())
@@ -83,9 +87,13 @@ class BlogActivitiesFragment : Fragment() {
                 recyclerView.setHasFixedSize(true)
                 val adapter = PostAdapter(postEntity, object: PostAdapter.OnPostListener{
                     override fun onPostClick(postEntity: PostEntity?) {
-                        postEntity!!.likes = postEntity.likes?.plus(1)
-                        Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
-                        postViewModel!!.update(postEntity, Application())
+                        view?.let{
+                            readPost(postEntity, it)
+                        }
+
+//                        postEntity!!.likes = postEntity.likes?.plus(1)
+//                        Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
+//                        postViewModel!!.update(postEntity, Application())
                     }
 
 
@@ -99,12 +107,20 @@ class BlogActivitiesFragment : Fragment() {
         })
     }
 
-    fun addNewPost(){
-        addFabBtn.setOnClickListener {
+    fun addNewPost(view: View){
 
-            val action = BlogActivitiesFragmentDirections.toAddPost()
-            Navigation.findNavController(it).navigate(action)
-        }
+        val action = BlogActivitiesFragmentDirections.actionBlogActivitiesFragmentToAddPostFragment2()
+        Navigation.findNavController(view).navigate(action)
+
+    }
+
+    fun readPost(postEntity: PostEntity?, view: View){
+
+
+            val action = BlogActivitiesFragmentDirections.actionBlogActivitiesFragmentToReadPostFragment()
+            action.post = postEntity
+            Navigation.findNavController(view).navigate(action)
+
     }
 
 

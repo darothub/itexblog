@@ -10,16 +10,18 @@
         android:name="com.example.itexblog.ui.BlogActivitiesFragment"
         android:label="fragment_blog_activities"
         tools:layout="@layout/fragment_blog_activities" >
-        <action
-            android:id="@+id/toAddPost"
-            app:destination="@id/addPostFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_enter_anim" />
         <argument
             android:name="post"
             app:argType="com.example.itexblog.ui.model.PostEntity"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_blogActivitiesFragment_to_readPostFragment"
+            app:destination="@id/readPostFragment" />
+        <action
+            android:id="@+id/action_blogActivitiesFragment_to_addPostFragment2"
+            app:destination="@id/addPostFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -31,4 +33,18 @@
         app:destination="@id/blogActivitiesFragment"
         app:enterAnim="@anim/nav_default_exit_anim"
         app:exitAnim="@anim/nav_default_enter_anim" />
+    <fragment
+        android:id="@+id/readPostFragment"
+        android:name="com.example.itexblog.ui.ReadPostFragment"
+        android:label="fragment_read_post"
+        tools:layout="@layout/fragment_read_post" >
+        <argument
+            android:name="post"
+            app:argType="com.example.itexblog.ui.model.PostEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_readPostFragment_to_addPostFragment"
+            app:destination="@id/addPostFragment" />
+    </fragment>
 </navigation>
