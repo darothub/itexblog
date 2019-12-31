@@ -11,10 +11,10 @@ import java.util.*
 
 @Entity
 class PostEntity(
-    val title: String,
-    val body: String,
-    val image: String? = null,
-    val date: String?
+    var title: String,
+    var body: String,
+    var image: String? = null,
+    var date: String?
 
 ): Serializable {
 

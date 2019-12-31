@@ -25,11 +25,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 
 import com.example.itexblog.R
+import com.example.itexblog.ui.model.PostDatabase
 import com.example.itexblog.ui.model.PostEntity
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_add_post.*
 import kotlinx.android.synthetic.main.post_row.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,7 +43,8 @@ import java.util.*
  */
 class AddPostFragment : Fragment() {
 
-    var imageUriLoader: Uri?=null
+    private var imageUriLoader: Uri?=null
+    private var incomingPost:PostEntity?=null
 
     private var postViewModel: PostViewModel?= null
     override fun onCreateView(
@@ -54,6 +59,11 @@ class AddPostFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        arguments?.let{
+            incomingPost =  AddPostFragmentArgs.fromBundle(it).post
+
+        }
+
 
         val nav = Navigation.findNavController(add_post_appbar)
         NavigationUI.setupWithNavController(add_post_toolbar, nav)
@@ -62,6 +72,29 @@ class AddPostFragment : Fragment() {
 
         val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
         val currentDate = sdf.format(Date())
+
+
+        if(incomingPost != null){
+            title.setText(incomingPost?.title)
+            body.setText(incomingPost?.body)
+            update_post_btn.visibility = View.VISIBLE
+            submit_post_btn.visibility = View.GONE
+
+            update_post_btn.setOnClickListener {
+
+                incomingPost?.let {
+                    it.title = title.text.toString()
+                    it.body = body.text.toString()
+                }
+                val result = updatePost(Application(), incomingPost!!)
+                if(result){
+                    Toast.makeText(context, "${incomingPost?.id} is updated", Toast.LENGTH_SHORT).show()
+                }
+
+
+            }
+        }
+
 
         addImageBtn.setOnClickListener {
             openGallery()
@@ -88,8 +121,6 @@ class AddPostFragment : Fragment() {
 
             Toast.makeText(context, imageUriLoader.toString(), Toast.LENGTH_SHORT).show()
             Log.i("Uri", imageUriLoader.toString())
-
-
 
 
 
@@ -188,11 +219,31 @@ class AddPostFragment : Fragment() {
 
     }
 
-    fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri{
+    private fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri{
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
         return Uri.parse(path.toString())
+    }
+
+
+    private fun updatePost(application: Application, postEntity: PostEntity):Boolean{
+        val title = postEntity.title
+        val body = postEntity.body
+        return if(title.isNotEmpty() && body.isNotEmpty()){
+            try{
+                CoroutineScope(Main).launch {
+                    PostDatabase.getInstance(application)?.postDao()?.update(postEntity)
+                }
+
+            } catch (e:Exception){
+                Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+            true
+
+        }else{
+            false
+        }
     }
 
 

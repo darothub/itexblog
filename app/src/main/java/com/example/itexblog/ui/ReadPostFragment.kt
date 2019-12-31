@@ -1,6 +1,7 @@
 package com.example.itexblog.ui
 
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.navigation.Navigation
 
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostEntity
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_blog_activities.*
 import kotlinx.android.synthetic.main.fragment_read_post.*
 
@@ -39,7 +41,28 @@ class ReadPostFragment : Fragment() {
         read_title.text = incomingPost?.title
         read_date.text = incomingPost?.date
         read_body.setText(incomingPost?.body)
+
+        if(incomingPost?.image != "null") {
+            val stringImageToUri = Uri.parse(incomingPost?.image)
+            Picasso.get().load(stringImageToUri).into(read_image)
+            read_image.visibility = View.VISIBLE
+            read_divider.visibility = View.VISIBLE
+        }
+
+        read_edit_btn.setOnClickListener {
+            toEdit(it, incomingPost)
+        }
+
+    }
+
+    private fun toEdit(view:View, postEntity: PostEntity?){
+        val action = ReadPostFragmentDirections.actionReadPostFragmentToAddPostFragment()
+        action.post = postEntity
+        Navigation.findNavController(view).navigate(action)
+
     }
 
 
 }
+
+

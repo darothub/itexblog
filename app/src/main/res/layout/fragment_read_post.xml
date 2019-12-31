@@ -60,7 +60,7 @@
                 />
 
             <View
-                android:id="@+id/divider"
+                android:id="@+id/read_divider"
                 style="@style/Divider"
                 android:layout_below="@id/read_image"
                 android:visibility="gone"
@@ -83,7 +83,7 @@
 
 
             <View
-                android:id="@+id/divider2"
+                android:id="@+id/read_divider2"
                 style="@style/Divider"
                 android:layout_below="@id/read_body"
                 android:layout_marginTop="5dp"
@@ -92,7 +92,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider2"
+                android:layout_below="@id/read_divider2"
 
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
@@ -109,13 +109,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/delete_btn"
+                    android:layout_toEndOf="@id/read_delete_btn"
                     android:contentDescription="@string/like_btn"
                     app:srcCompat="@drawable/ic_favorite_white" />
 
 
                 <ImageView
-                    android:id="@+id/delete_btn"
+                    android:id="@+id/read_delete_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -128,8 +128,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/read_like_btn"
-                    android:gravity="fill_vertical"
-                    android:text="1"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:text="0"
                     android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
