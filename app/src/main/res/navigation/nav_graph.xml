@@ -54,5 +54,8 @@
         <action
             android:id="@+id/action_readPostFragment_to_addPostFragment"
             app:destination="@id/addPostFragment" />
+        <action
+            android:id="@+id/toBlogPost"
+            app:destination="@id/blogActivitiesFragment" />
     </fragment>
 </navigation>

@@ -18,4 +18,5 @@
     <string name="exit">Exit</string>
     <string name="Add_an_image"><u>Add an image</u></string>
     <string name="TakeAPhoto"><u>Take a phot</u>o</string>
+    <string name="remove_image">Remove image</string>
 </resources>

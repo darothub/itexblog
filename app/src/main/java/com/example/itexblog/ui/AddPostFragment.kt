@@ -45,6 +45,7 @@ class AddPostFragment : Fragment() {
 
     private var imageUriLoader: Uri?=null
     private var incomingPost:PostEntity?=null
+    private var removedImage:Boolean?=null
 
     private var postViewModel: PostViewModel?= null
     override fun onCreateView(
@@ -79,16 +80,40 @@ class AddPostFragment : Fragment() {
             body.setText(incomingPost?.body)
             update_post_btn.visibility = View.VISIBLE
             submit_post_btn.visibility = View.GONE
+            if(incomingPost?.image !="null"){
+                val imageUri = Uri.parse(incomingPost?.image)
+                Picasso.get().load(imageUri).into(image_placeholder)
+                image_placeholder.visibility = View.VISIBLE
+            }
+            else{
 
-            update_post_btn.setOnClickListener {
+            }
+
+
+            update_post_btn.setOnClickListener {view ->
 
                 incomingPost?.let {
                     it.title = title.text.toString()
                     it.body = body.text.toString()
+                    it.date = currentDate
+                    removedImage?.let{imageRemoved ->
+                        if(imageRemoved && image_placeholder.visibility==View.GONE){
+                            it.image = "null"
+                        }
+                        else if(imageUriLoader == null && image_placeholder.visibility==View.VISIBLE){
+                            it.image = it.image
+                        }
+                        else{
+                            it.image = imageUriLoader.toString()
+
+                        }
+                    }
                 }
-                val result = updatePost(Application(), incomingPost!!)
+                val result = updatePost(context, incomingPost!!)
                 if(result){
-                    Toast.makeText(context, "${incomingPost?.id} is updated", Toast.LENGTH_SHORT).show()
+                    val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
+                    Navigation.findNavController(view).navigate(action)
+                    Toast.makeText(context, "${imageUriLoader.toString()} is updated", Toast.LENGTH_SHORT).show()
                 }
 
 
@@ -124,6 +149,20 @@ class AddPostFragment : Fragment() {
 
 
 
+        }
+
+        add_post_toolbar.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.remove_image ->{
+                    val result = removeImage(image_placeholder)
+                    if(result){
+                        image_placeholder.visibility = View.GONE
+                        Toast.makeText(context, "Image removed", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            }
+            true
         }
 
 
@@ -227,13 +266,14 @@ class AddPostFragment : Fragment() {
     }
 
 
-    private fun updatePost(application: Application, postEntity: PostEntity):Boolean{
+    private fun updatePost(context: Context?, postEntity: PostEntity):Boolean{
         val title = postEntity.title
         val body = postEntity.body
         return if(title.isNotEmpty() && body.isNotEmpty()){
             try{
                 CoroutineScope(Main).launch {
-                    PostDatabase.getInstance(application)?.postDao()?.update(postEntity)
+//                    postViewModel!!.update(postEntity, application)
+                    PostDatabase.getInstance(context!!)?.postDao()?.update(postEntity)
                 }
 
             } catch (e:Exception){
@@ -244,6 +284,25 @@ class AddPostFragment : Fragment() {
         }else{
             false
         }
+    }
+
+    private fun removeImage(imageView: ImageView):Boolean{
+
+        return try{
+            imageView.setImageURI(null)
+            removedImage = true
+            true
+        } catch(e:Exception) {
+
+            Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+            removedImage = false
+            false
+        }
+
+
+
+
+
     }
 
 
