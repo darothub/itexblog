@@ -83,7 +83,9 @@ class BlogActivitiesFragment : Fragment() {
                 recyclerView.setHasFixedSize(true)
                 val adapter = PostAdapter(postEntity, object: PostAdapter.OnPostListener{
                     override fun onPostClick(postEntity: PostEntity?) {
-                        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+                        postEntity!!.likes = postEntity.likes?.plus(1)
+                        Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
+                        postViewModel!!.update(postEntity, Application())
                     }
 
 
