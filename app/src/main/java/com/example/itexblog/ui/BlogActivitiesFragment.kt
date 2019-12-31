@@ -45,10 +45,10 @@ class BlogActivitiesFragment : Fragment() {
 //
 //        NavigationUI.setupWithNavController(post_toolbar, navController)
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.setHasFixedSize(true)
-        val adapter = PostAdapter()
-        recyclerView.adapter = adapter
+//        recyclerView.layoutManager = LinearLayoutManager(context)
+//        recyclerView.setHasFixedSize(true)
+//        val adapter = PostAdapter()
+//        recyclerView.adapter = adapter
 
         postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
 
@@ -76,9 +76,19 @@ class BlogActivitiesFragment : Fragment() {
 //        postViewModel!!.insert(post1, Application())
 //
 //        postViewModel!!.insert(post2, Application())
-        postViewModel!!.deleteAll(Application())
+//        postViewModel!!.deleteAll(Application())
         postViewModel!!.getAllPosts()?.observe(this, object: Observer<List<PostEntity?>?> {
             override fun onChanged(postEntity: List<PostEntity?>?) {
+                recyclerView.layoutManager = LinearLayoutManager(context)
+                recyclerView.setHasFixedSize(true)
+                val adapter = PostAdapter(postEntity, object: PostAdapter.OnPostListener{
+                    override fun onPostClick(postEntity: PostEntity?) {
+                        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+                    }
+
+
+                })
+                recyclerView.adapter = adapter
                 adapter.setPost(postEntity)
 //                Toast.makeText(context, "$postEntity", Toast.LENGTH_LONG).show()
                 Log.i("this class", "$postEntity")

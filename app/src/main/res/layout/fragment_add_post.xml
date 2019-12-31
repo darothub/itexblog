@@ -53,7 +53,7 @@
             <EditText
                 android:id="@+id/body"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:gravity="top"
                 android:hint="Body"
                 android:inputType="text|textMultiLine"

@@ -13,9 +13,8 @@ import java.util.*
 class PostEntity(
     val title: String,
     val body: String,
-    val image: String?,
+    val image: String? = null,
     val date: String?
-
 
 ): Serializable {
 

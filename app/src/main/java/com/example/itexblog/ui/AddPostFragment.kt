@@ -76,26 +76,25 @@ class AddPostFragment : Fragment() {
             val body = body.text.toString()
             val image = image_placeholder.drawable.toBitmap()
             val imageInt = image
+
             val saveRequest = savePost(Application(), title, body, imageUriLoader.toString())
-
-            Toast.makeText(context, imageUriLoader.toString(), Toast.LENGTH_SHORT).show()
-            Log.i("image", imageUriLoader.toString())
-
-
-
             if(saveRequest){
                 val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
                 Navigation.findNavController(it).navigate(action)
             }
+
+//            val stringImageToUri = Uri.parse(currentPost.image.toString())
+
+
+            Toast.makeText(context, imageUriLoader.toString(), Toast.LENGTH_SHORT).show()
+            Log.i("Uri", imageUriLoader.toString())
+
+
+
+
+
         }
 
-
-
-
-
-
-
-//        postViewModel!!.deleteAll(Application())
 
     }
 
@@ -167,7 +166,7 @@ class AddPostFragment : Fragment() {
         }
     }
 
-    private fun savePost(application: Application, title:String, body:String, image:String?): Boolean{
+    private fun savePost(application: Application, title:String, body:String, image:String?=null): Boolean{
 
         val sdf =SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
         val currentDate = sdf.format(Date())

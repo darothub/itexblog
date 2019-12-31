@@ -2,135 +2,156 @@
 <layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="postAdapter"
             type="com.example.itexblog.ui.adapters.PostAdapter" />
+
         <variable
             name="entity"
             type="com.example.itexblog.ui.model.PostEntity" />
 
     </data>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="5dp"
-        android:layout_margin="10dp">
-        <RelativeLayout
-            android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/post_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Title"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@id/post_date"
-                android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold"
-                android:ellipsize="end"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp">
 
-            <TextView
-                android:id="@+id/post_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:layout_alignParentEnd="true"
-                android:ellipsize="end"/>
-            <TextView
-                android:id="@+id/post_body"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/post_title"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:text="@string/body_message"
-                android:textAlignment="viewStart"
-                android:ellipsize="end"
-                android:gravity="start|end"
-                android:justificationMode="inter_word"
-                android:maxLines="3"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
 
-                <View
-                    android:id="@+id/divider"
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/post_body"
-                    style="@style/Divider"/>
+                <RelativeLayout
+                    android:id="@+id/header_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/post_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/post_date"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/post_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:ellipsize="end"
+                        android:text="Date" />
+                </RelativeLayout>
+
+
+
                 <ImageView
                     android:id="@+id/post_image"
-                    android:layout_below="@id/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="250dp"
+                    android:layout_below="@id/header_text"
                     android:layout_marginTop="5dp"
                     android:scaleType="fitXY"
+                    android:visibility="gone"
 
                     />
 
                 <View
-                    android:id="@+id/divider2"
-                    android:layout_marginTop="5dp"
+                    android:id="@+id/divider"
+                    style="@style/Divider"
                     android:layout_below="@id/post_image"
-                    style="@style/Divider"/>
+                    android:visibility="gone"
+                    android:layout_marginTop="5dp" />
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/post_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/post_image"
                     android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="start|end"
+                    android:justificationMode="inter_word"
+                    android:maxLines="3"
+                    android:text="@string/body_message"
+                    android:textAlignment="viewStart" />
 
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/divider2"
+                    style="@style/Divider"
+                    android:layout_below="@id/post_body"
+                    android:layout_marginTop="5dp"
+                     />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider2"
+
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/edit_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/edit_btn"
-                        app:srcCompat="@drawable/ic_edit_white"/>
+                        app:srcCompat="@drawable/ic_edit_white" />
 
                     <ImageView
                         android:id="@+id/like_btn"
-                        android:contentDescription="@string/like_btn"
-                        android:layout_marginStart="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
                         android:layout_toEndOf="@id/delete_btn"
-                        app:srcCompat="@drawable/ic_favorite_white"/>
+                        android:contentDescription="@string/like_btn"
+                        app:srcCompat="@drawable/ic_favorite_white" />
 
 
                     <ImageView
                         android:id="@+id/delete_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_toEndOf="@id/edit_btn"
                         android:contentDescription="@string/delete_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_delete_white"/>
+                        app:srcCompat="@drawable/ic_delete_white" />
+
                     <TextView
                         android:id="@+id/num_of_likes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_toEndOf="@id/like_btn"
                         android:gravity="fill_vertical"
-                        android:layout_toEndOf="@id/like_btn"/>
+                        android:text="1"
+                        android:textColor="@color/colorPrimaryDark" />
 
                     <TextView
                         android:id="@+id/comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/comments"
                         android:layout_alignParentEnd="true"
-                        android:textColor="@color/colorPrimaryDark"/>
-
+                        android:text="@string/comments"
+                        android:textColor="@color/colorPrimaryDark" />
 
 
                 </RelativeLayout>
