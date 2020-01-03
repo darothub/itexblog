@@ -1,5 +1,6 @@
 package com.example.itexblog.ui.adapters
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 
 
 class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnPostListener):RecyclerView.Adapter<PostAdapter.PostHolder>() {
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
@@ -84,6 +86,7 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
         var post_date =itemView.findViewById<TextView>(R.id.post_date)
         var divider = itemView.findViewById<View>(R.id.divider)
         var deleteBtn = itemView.findViewById<View>(R.id.delete_btn)
+        var likeBtn = itemView.findViewById<ImageView>(R.id.like_btn)
 
 
 
@@ -100,12 +103,6 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
             if(postEntity?.image != "null"){
                 stringImageToUri = Uri.parse(postEntity?.image)
 
-                //calling File Utils here is the reason for the crash
-//                val imagePath = FileUtils.getPath(post_image.context, stringImageToUri)
-//                val imageFile = File(imagePath)
-//This code is not being called?
-
-//                Picasso.get().load(imageFile).into(post_image)
 
 
                 Picasso.get().load(stringImageToUri).into(post_image)
@@ -113,6 +110,11 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
                 divider.visibility = View.VISIBLE
             }
             Log.i("imageUri", "$stringImageToUri")
+
+            likeBtn.setOnClickListener{
+                likesCount(postEntity, it.context)
+
+            }
 
             deleteBtn.setOnClickListener {view ->
 
@@ -131,8 +133,18 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
 
         }
 
+        fun likesCount(postEntity: PostEntity?, context: Context){
+            postEntity!!.likes = postEntity.likes?.plus(1)
+            Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
+            CoroutineScope(IO).launch {
+                PostDatabase.getInstance(context)?.postDao()?.update(postEntity)
+            }
+        }
+
 
     }
+
+
 
     interface OnPostListener{
         fun onPostClick(postEntity: PostEntity?)

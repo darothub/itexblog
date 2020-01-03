@@ -2,15 +2,17 @@ package com.example.itexblog.ui
 
 
 import android.app.AlertDialog
-import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.itexblog.R
+import com.example.itexblog.ui.adapters.PostAdapter
 import com.example.itexblog.ui.model.PostDatabase
 import com.example.itexblog.ui.model.PostEntity
 import com.example.itexblog.ui.utils.FileUtils
@@ -50,15 +52,11 @@ class ReadPostFragment : Fragment() {
         read_title.text = incomingPost?.title
         read_date.text = incomingPost?.date
         read_body.setText(incomingPost?.body)
+        read_num_of_likes.setText(incomingPost?.likes.toString())
+
 
         if(incomingPost?.image != "null") {
             val stringImageToUri = Uri.parse(incomingPost?.image)
-
-            //Hi Attish this part handles incoming argument from another fragments.
-
-            // for instance I am sending the clicked post data here for edit
-
-            // I think you probably wanna do something in the adapterhere
             val imagePath = FileUtils.getPath(context, stringImageToUri)
             val imageFile = File(imagePath)
 
@@ -89,20 +87,11 @@ class ReadPostFragment : Fragment() {
 
 
         }
-        val gesture = GestureDetector(context, object :GestureDetector.SimpleOnGestureListener(){
-            override fun onDoubleTap(e: MotionEvent?): Boolean {
-                incomingPost!!.likes = incomingPost!!.likes?.plus(1)
-                Toast.makeText(context, "${incomingPost?.likes}", Toast.LENGTH_SHORT).show()
-                postViewModel!!.update(incomingPost!!, Application())
-                return super.onDoubleTap(e)
-
-            }
-        })
-
-        reader_card_container.setOnTouchListener { v, event ->
-            Toast.makeText(context, "tapped", Toast.LENGTH_SHORT).show()
-            gesture.onTouchEvent(event)
+        read_like_btn.setOnClickListener {
+            PostAdapter.PostHolder(view!!).likesCount(incomingPost, context!!)
+            read_num_of_likes.setText(incomingPost?.likes.toString())
         }
+
 
 
     }

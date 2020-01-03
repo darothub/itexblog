@@ -124,7 +124,7 @@
                     app:srcCompat="@drawable/ic_delete_white" />
 
                 <TextView
-                    android:id="@+id/num_of_likes"
+                    android:id="@+id/read_num_of_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/read_like_btn"

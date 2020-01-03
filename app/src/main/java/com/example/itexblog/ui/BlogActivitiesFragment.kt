@@ -4,6 +4,7 @@ package com.example.itexblog.ui
 import android.app.AlertDialog
 import android.app.Application
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,7 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 class BlogActivitiesFragment : Fragment() {
+    var i =0
 
     private var postViewModel: PostViewModel?= null
     private var adapter:PostAdapter? = null
@@ -89,15 +91,26 @@ class BlogActivitiesFragment : Fragment() {
             override fun onChanged(postEntity: List<PostEntity?>?) {
                 recyclerView.layoutManager = LinearLayoutManager(context)
                 recyclerView.setHasFixedSize(true)
+
                 adapter = PostAdapter(postEntity, object: PostAdapter.OnPostListener{
                     override fun onPostClick(postEntity: PostEntity?) {
                         view?.let{
-                            readPost(postEntity, it)
+//                            readPost(postEntity, it)
                         }
+                        i=i.plus(1)
+                        val handler = Handler()
+                        val runn = Runnable {
+                             i = 0
+                        }
+                        if(i == 1){
+                            Toast.makeText(context, "Single Clicked", Toast.LENGTH_SHORT).show()
+                            handler.postDelayed(runn, 400)
+                        }
+                        else if(i == 2){
+                            Toast.makeText(context, "Double Clicked", Toast.LENGTH_SHORT).show()
+                            PostAdapter.PostHolder(view!!).likesCount(postEntity, context!!)
 
-//                        postEntity!!.likes = postEntity.likes?.plus(1)
-//                        Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
-//                        postViewModel!!.update(postEntity, Application())
+                        }
                     }
 
 
