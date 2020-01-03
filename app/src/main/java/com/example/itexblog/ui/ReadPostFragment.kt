@@ -4,26 +4,23 @@ package com.example.itexblog.ui
 import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostDatabase
 import com.example.itexblog.ui.model.PostEntity
+import com.example.itexblog.ui.utils.FileUtils
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_blog_activities.*
 import kotlinx.android.synthetic.main.fragment_read_post.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 /**
  * A simple [Fragment] subclass.
@@ -56,6 +53,15 @@ class ReadPostFragment : Fragment() {
 
         if(incomingPost?.image != "null") {
             val stringImageToUri = Uri.parse(incomingPost?.image)
+
+            //Hi Attish this part handles incoming argument from another fragments.
+
+            // for instance I am sending the clicked post data here for edit
+
+            // I think you probably wanna do something in the adapterhere
+            val imagePath = FileUtils.getPath(context, stringImageToUri)
+            val imageFile = File(imagePath)
+
             Picasso.get().load(stringImageToUri).into(read_image)
             read_image.visibility = View.VISIBLE
             read_divider.visibility = View.VISIBLE
@@ -81,9 +87,26 @@ class ReadPostFragment : Fragment() {
 
             }.create().show()
 
+
+        }
+        val gesture = GestureDetector(context, object :GestureDetector.SimpleOnGestureListener(){
+            override fun onDoubleTap(e: MotionEvent?): Boolean {
+                incomingPost!!.likes = incomingPost!!.likes?.plus(1)
+                Toast.makeText(context, "${incomingPost?.likes}", Toast.LENGTH_SHORT).show()
+                postViewModel!!.update(incomingPost!!, Application())
+                return super.onDoubleTap(e)
+
+            }
+        })
+
+        reader_card_container.setOnTouchListener { v, event ->
+            Toast.makeText(context, "tapped", Toast.LENGTH_SHORT).show()
+            gesture.onTouchEvent(event)
         }
 
+
     }
+
 
     private fun toEdit(view:View, postEntity: PostEntity?){
         val action = ReadPostFragmentDirections.actionReadPostFragmentToAddPostFragment()

@@ -1,18 +1,13 @@
 package com.example.itexblog.ui.adapters
 
-import android.app.Application
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
-import androidx.databinding.BindingAdapter
-import androidx.databinding.adapters.AdapterViewBindingAdapter
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.RecyclerView
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostDatabase
@@ -22,12 +17,13 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
-import androidx.navigation.Navigation as Navigation1
+
 
 class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnPostListener):RecyclerView.Adapter<PostAdapter.PostHolder>() {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
+
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_row, parent, false)
 
         return PostHolder(itemView)
@@ -77,7 +73,9 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
 
 
 
+
     class PostHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        private var stringImageToUri:Uri?=null
 
         var title = itemView.findViewById<TextView>(R.id.post_title)
         var body = itemView.findViewById<TextView>(R.id.post_body)
@@ -98,12 +96,23 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
                 num_of_likes.setText(it.toString())
             }
 
+
             if(postEntity?.image != "null"){
-                val stringImageToUri = Uri.parse(postEntity?.image)
+                stringImageToUri = Uri.parse(postEntity?.image)
+
+                //calling File Utils here is the reason for the crash
+//                val imagePath = FileUtils.getPath(post_image.context, stringImageToUri)
+//                val imageFile = File(imagePath)
+//This code is not being called?
+
+//                Picasso.get().load(imageFile).into(post_image)
+
+
                 Picasso.get().load(stringImageToUri).into(post_image)
                 post_image.visibility = View.VISIBLE
                 divider.visibility = View.VISIBLE
             }
+            Log.i("imageUri", "$stringImageToUri")
 
             deleteBtn.setOnClickListener {view ->
 

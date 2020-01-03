@@ -5,36 +5,32 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostDatabase
 import com.example.itexblog.ui.model.PostEntity
+import com.example.itexblog.ui.utils.FileUtils
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_add_post.*
-import kotlinx.android.synthetic.main.post_row.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,6 +42,7 @@ class AddPostFragment : Fragment() {
     private var imageUriLoader: Uri?=null
     private var incomingPost:PostEntity?=null
     private var removedImage:Boolean?=null
+    private var imagePath:String?=null
 
     private var postViewModel: PostViewModel?= null
     override fun onCreateView(
@@ -179,11 +176,20 @@ class AddPostFragment : Fragment() {
     }
 
     private fun openGallery(){
-        val intent = Intent(Intent.ACTION_PICK)
+
+
+
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.type = "image/*"
-        val mimeTypes = arrayOf("image/jpeg", "image/png")
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-        startActivityForResult(intent, 201)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        if(intent.resolveActivity(activity!!.packageManager) != null){
+            val mimeTypes = arrayOf("image/jpeg", "image/png")
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+            startActivityForResult(intent, 201)
+        }
+
+
     }
 
     private fun openCamera(){
@@ -219,8 +225,17 @@ class AddPostFragment : Fragment() {
         else if(requestCode == 201){
             try{
                 val imageUri = data!!.data
+                imagePath = FileUtils.getPath(context, imageUri)
                 imageUriLoader = imageUri
-                Picasso.get().load(imageUri).into(imageView)
+//                Picasso.get().load(imageUri).into(imageView)
+                //Checking if picasso is able to load full path
+
+
+
+
+                val imageFile = File(imagePath)
+
+                Picasso.get().load(imageFile).into(imageView)
 
                 imageView.visibility = View.VISIBLE
                 imageView.setImageURI(imageUri)
@@ -272,7 +287,7 @@ class AddPostFragment : Fragment() {
         return if(title.isNotEmpty() && body.isNotEmpty()){
             try{
                 CoroutineScope(Main).launch {
-//                    postViewModel!!.update(postEntity, application)
+                    //                    postViewModel!!.update(postEntity, application)
                     PostDatabase.getInstance(context!!)?.postDao()?.update(postEntity)
                 }
 

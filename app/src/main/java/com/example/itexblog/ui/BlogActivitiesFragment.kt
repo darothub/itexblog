@@ -1,26 +1,27 @@
 package com.example.itexblog.ui
 
 
+import android.app.AlertDialog
 import android.app.Application
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.itexblog.R
 import com.example.itexblog.ui.adapters.PostAdapter
 import com.example.itexblog.ui.model.PostEntity
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import kotlinx.android.synthetic.main.fragment_blog_activities.*
-import kotlinx.android.synthetic.main.post_row.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -58,19 +59,19 @@ class BlogActivitiesFragment : Fragment() {
         val sdf =SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
         val currentDate = sdf.format(Date())
 
-        val post1 = PostEntity("The news",
-                """I have been a fan of ManchesterUnited for decades
-                    I have been a fan of ManchesterUnited for decades
-                    I have been a fan of ManchesterUnited for decades
-                """.trim().trimMargin(), null, currentDate
-            )
-
-        val post2 = PostEntity("The news",
-            """I have been a fan of ManchesterUnited for years
-                    I have been a fan of ManchesterUnited for years
-                    I have been a fan of ManchesterUnited for years
-                """.trim().trimMargin(), null, currentDate
-        )
+//        val post1 = PostEntity("The news",
+//                """I have been a fan of ManchesterUnited for decades
+//                    I have been a fan of ManchesterUnited for decades
+//                    I have been a fan of ManchesterUnited for decades
+//                """.trim().trimMargin(), null, currentDate
+//            )
+//
+//        val post2 = PostEntity("The news",
+//            """I have been a fan of ManchesterUnited for years
+//                    I have been a fan of ManchesterUnited for years
+//                    I have been a fan of ManchesterUnited for years
+//                """.trim().trimMargin(), null, currentDate
+//        )
 
         addFabBtn.setOnClickListener {
 
@@ -119,8 +120,37 @@ class BlogActivitiesFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                postViewModel?.delete(adapter?.getPostAt(viewHolder.adapterPosition)!!, Application())
-                Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
+                AlertDialog.Builder(context).apply {
+                    setTitle("Are you sure?")
+                    setMessage("You cannot undo this operation")
+                    setPositiveButton("Yes"){_, _ ->
+                        postViewModel?.delete(adapter?.getPostAt(viewHolder.adapterPosition)!!, Application())
+                        Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
+                    }
+                    setNegativeButton("No"){_, _ ->
+                        findNavController().navigate(R.id.blogActivitiesFragment)
+
+                    }
+
+
+                }.create().show()
+
+            }
+
+        }).attachToRecyclerView(recyclerView)
+
+        ItemTouchHelper(object :ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                readPost(adapter?.getPostAt(viewHolder.adapterPosition)!!, view!!)
+                Toast.makeText(context, "Read", Toast.LENGTH_SHORT).show()
             }
 
         }).attachToRecyclerView(recyclerView)
