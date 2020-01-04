@@ -8,13 +8,11 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -43,6 +41,8 @@ class AddPostFragment : Fragment() {
     private var incomingPost:PostEntity?=null
     private var removedImage:Boolean?=null
     private var imagePath:String?=null
+    private var imageFile:File? = null
+    private var currentDate:String? = null
 
     private var postViewModel: PostViewModel?= null
     override fun onCreateView(
@@ -54,6 +54,7 @@ class AddPostFragment : Fragment() {
     }
 
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -63,91 +64,11 @@ class AddPostFragment : Fragment() {
         }
 
 
+        //Attaching navigation to the app bar and toolbar
         val nav = Navigation.findNavController(add_post_appbar)
         NavigationUI.setupWithNavController(add_post_toolbar, nav)
 
-        postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
-
-        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
-        val currentDate = sdf.format(Date())
-
-
-        if(incomingPost != null){
-            title.setText(incomingPost?.title)
-            body.setText(incomingPost?.body)
-            update_post_btn.visibility = View.VISIBLE
-            submit_post_btn.visibility = View.GONE
-            if(incomingPost?.image !="null"){
-                val imageUri = Uri.parse(incomingPost?.image)
-                Picasso.get().load(imageUri).into(image_placeholder)
-                image_placeholder.visibility = View.VISIBLE
-            }
-            else{
-
-            }
-
-
-            update_post_btn.setOnClickListener {view ->
-
-                incomingPost?.let {
-                    it.title = title.text.toString()
-                    it.body = body.text.toString()
-                    it.date = currentDate
-                    removedImage?.let{imageRemoved ->
-                        if(imageRemoved && image_placeholder.visibility==View.GONE){
-                            it.image = "null"
-                        }
-                        else if(imageUriLoader == null && image_placeholder.visibility==View.VISIBLE){
-                            it.image = it.image
-                        }
-                        else{
-                            it.image = imageUriLoader.toString()
-
-                        }
-                    }
-                }
-                val result = updatePost(context, incomingPost!!)
-                if(result){
-                    val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
-                    Navigation.findNavController(view).navigate(action)
-                    Toast.makeText(context, "${imageUriLoader.toString()} is updated", Toast.LENGTH_SHORT).show()
-                }
-
-
-            }
-        }
-
-
-        addImageBtn.setOnClickListener {
-            openGallery()
-        }
-
-        cameraBtn.setOnClickListener {
-            openCamera()
-        }
-
-        submit_post_btn.setOnClickListener {
-            val title = title.text.toString()
-            val body = body.text.toString()
-            val image = image_placeholder.drawable.toBitmap()
-            val imageInt = image
-
-            val saveRequest = savePost(Application(), title, body, imageUriLoader.toString())
-            if(saveRequest){
-                val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
-                Navigation.findNavController(it).navigate(action)
-            }
-
-//            val stringImageToUri = Uri.parse(currentPost.image.toString())
-
-
-            Toast.makeText(context, imageUriLoader.toString(), Toast.LENGTH_SHORT).show()
-            Log.i("Uri", imageUriLoader.toString())
-
-
-
-        }
-
+        // Listening to onclick on menu item(s)
         add_post_toolbar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.remove_image ->{
@@ -162,10 +83,94 @@ class AddPostFragment : Fragment() {
             true
         }
 
+        //PostViewModel to observe new changes
+        postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
+
+        //Getting date
+        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
+        currentDate = sdf.format(Date())
+
+
+        //Checking if the content is an old post for update
+        if(incomingPost != null){
+            title.setText(incomingPost?.title)
+            body.setText(incomingPost?.body)
+            update_post_btn.visibility = View.VISIBLE
+            submit_post_btn.visibility = View.GONE
+            if(incomingPost?.image !="null"){
+                val imageUri = Uri.parse(incomingPost?.image)
+                Picasso.get().load(imageUri).into(image_placeholder)
+                image_placeholder.visibility = View.VISIBLE
+            }
+            else{
+                image_placeholder.visibility = View.GONE
+
+
+
+            }
+
+
+            //On click listerner for update request
+            update_post_btn.setOnClickListener {view ->
+
+                val title = title.text.toString()
+                val body = body.text.toString()
+                val id = incomingPost?.id
+
+                val updateRequestResult = updatePost(Application(), title, body,
+                    if(imageUriLoader.toString() != "null") imageUriLoader.toString()
+                    else if(removedImage!!) "null" else incomingPost?.image, id!!)
+
+                //When update is successful
+                if(updateRequestResult){
+                    val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
+                    Navigation.findNavController(view).navigate(action)
+                    Toast.makeText(context, "post with ${incomingPost?.title } and ${incomingPost?.id } is updated", Toast.LENGTH_SHORT).show()
+                }
+
+
+            }
+        }
+
+
+        //On click listener to open gallery
+        addImageBtn.setOnClickListener {
+            openGallery()
+        }
+
+        // On click listener to open camera
+        cameraBtn.setOnClickListener {
+            openCamera()
+        }
+
+        //On click listener to submit new post
+        submit_post_btn.setOnClickListener {
+            val title = title.text.toString()
+            val body = body.text.toString()
+
+
+            val saveRequest = savePost(Application(), title, body, imageUriLoader.toString())
+            Toast.makeText(context, "${imageUriLoader.toString()} is updated", Toast.LENGTH_SHORT).show()
+
+            //when post request is successful
+            if(saveRequest){
+                val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
+                Navigation.findNavController(it).navigate(action)
+            }
+
+//            Toast.makeText(context, imageUriLoader.toString(), Toast.LENGTH_SHORT).show()
+//            Log.i("Uri", imageUriLoader.toString())
+
+
+
+        }
+
+
 
     }
 
 
+    //Activity for gallery or camera request
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -175,10 +180,8 @@ class AddPostFragment : Fragment() {
 
     }
 
+    //Custom function to open gallery
     private fun openGallery(){
-
-
-
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.type = "image/*"
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -192,6 +195,7 @@ class AddPostFragment : Fragment() {
 
     }
 
+    //Custom function to open camera
     private fun openCamera(){
         try{
             val CAMERA_REQUEST = 200
@@ -204,38 +208,40 @@ class AddPostFragment : Fragment() {
 
     }
 
+    //Custom function to react to request from camera and picture result
     private fun loadImage(requestCode: Int, imageView: ImageView, context: Context, data: Intent?){
+        //When image is from the camera
         if(requestCode == 200){
             try{
 
+                //Convert result to bitmap
                 val image = data!!.extras?.get("data") as Bitmap
 
-
+                //Show result in the image_placeholder
                 imageView.setImageBitmap(image)
                 imageView.visibility = View.VISIBLE
 
+                //Extract Uri version from Bitmap
                 imageUriLoader = getImageUriFromBitmap(context, image)
             }
             catch (e:Exception){
-                Toast.makeText(context, "Please try againt: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
             }
 
         }
 
+        //When image is from the gallery
         else if(requestCode == 201){
             try{
+                //Extract Uri version from data
                 val imageUri = data!!.data
+
+                //Get absolute path and store it
                 imagePath = FileUtils.getPath(context, imageUri)
                 imageUriLoader = imageUri
-//                Picasso.get().load(imageUri).into(imageView)
-                //Checking if picasso is able to load full path
 
+                imageFile = File(imagePath)
 
-
-
-                val imageFile = File(imagePath)
-
-                Picasso.get().load(imageFile).into(imageView)
 
                 imageView.visibility = View.VISIBLE
                 imageView.setImageURI(imageUri)
@@ -281,14 +287,15 @@ class AddPostFragment : Fragment() {
     }
 
 
-    private fun updatePost(context: Context?, postEntity: PostEntity):Boolean{
-        val title = postEntity.title
-        val body = postEntity.body
+    private fun updatePost(context: Context?, title: String, body: String, image: String?, id:Int):Boolean{
+
         return if(title.isNotEmpty() && body.isNotEmpty()){
             try{
                 CoroutineScope(Main).launch {
                     //                    postViewModel!!.update(postEntity, application)
-                    PostDatabase.getInstance(context!!)?.postDao()?.update(postEntity)
+                    val updatedPost = PostEntity(title, body, image, currentDate)
+                    updatedPost.id = id
+                    PostDatabase.getInstance(context!!)?.postDao()?.update(updatedPost)
                 }
 
             } catch (e:Exception){

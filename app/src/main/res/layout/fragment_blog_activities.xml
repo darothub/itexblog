@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_new"
     tools:context=".ui.BlogActivitiesFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -19,19 +20,28 @@
             app:contentScrim="?attr/colorPrimaryDark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="fitCenter"
-                app:layout_collapseMode="parallax"
-                app:srcCompat="@drawable/itex"
-                app:layout_collapseParallaxMultiplier="0.7"/>
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/blog_activity_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 app:menu="@menu/post_menu"
-                app:layout_collapseMode="pin"/>
+                android:elevation="10dp"
+                app:layout_collapseMode="pin">
+
+                <ImageView
+                    android:id="@+id/itex_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@id/blog_activity_toolbar"
+                    android:scaleType="fitCenter"
+                    app:layout_collapseMode="parallax"
+                    app:srcCompat="@drawable/itex"
+                    app:layout_collapseParallaxMultiplier="0.7"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -41,6 +51,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+
         android:layout_marginTop="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

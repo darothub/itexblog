@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="postAdapter"
-            type="com.example.itexblog.ui.adapters.PostAdapter" />
-
-        <variable
-            name="entity"
-            type="com.example.itexblog.ui.model.PostEntity" />
-
-    </data>
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -26,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="5dp"
             app:cardElevation="5dp">
@@ -116,16 +103,27 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/edit_btn"
                         android:visibility="gone"
+
                         app:srcCompat="@drawable/ic_edit_white" />
 
-                    <ImageView
+<!--                    <ImageView-->
+<!--                        android:id="@+id/like_btn"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="0dp"-->
+<!--                        android:layout_toEndOf="@id/delete_btn"-->
+<!--                        android:contentDescription="@string/like_btn"-->
+<!--                        app:srcCompat="@drawable/ic_favorite_white" />-->
+
+                    <ImageButton
                         android:id="@+id/like_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="0dp"
+                        android:background="@color/colorPrimary"
                         android:layout_toEndOf="@id/delete_btn"
                         android:contentDescription="@string/like_btn"
-                        app:srcCompat="@drawable/ic_favorite_white" />
+                        app:srcCompat="@drawable/ic_favorite_white"/>
 
 
                     <ImageView

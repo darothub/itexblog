@@ -3,6 +3,8 @@ package com.example.itexblog.ui.utils
 import android.app.Application
 import com.example.itexblog.ui.model.PostDao
 import com.example.itexblog.ui.model.PostEntity
+import com.example.itexblog.ui.model.commentmodel.CommentDao
+import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,5 +45,36 @@ class CoroutineTaskSingleton (application: Application) {
         CoroutineScope(Dispatchers.IO).launch {
             postDao.deleteAllPosts()
         }
+    }
+
+    fun insertCommentTask(commentDao: CommentDao, commentsEntity: CommentsEntity){
+
+        CoroutineScope(Dispatchers.IO).launch {
+            commentDao.insert(commentsEntity)
+        }
+
+    }
+
+    fun updateCommentTask(commentDao: CommentDao, commentsEntity: CommentsEntity){
+
+        CoroutineScope(Dispatchers.IO).launch {
+            commentDao.update(commentsEntity)
+        }
+
+    }
+    fun deleteCommentTask(commentDao: CommentDao, commentsEntity: CommentsEntity){
+
+        CoroutineScope(Dispatchers.IO).launch {
+            commentDao.delete(commentsEntity)
+        }
+
+    }
+
+    fun deleteAllCommentTask(commentDao: CommentDao){
+
+        CoroutineScope(Dispatchers.IO).launch {
+            commentDao.deleteAllComments()
+        }
+
     }
 }

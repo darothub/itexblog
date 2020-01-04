@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.itexblog.ui.model.PostEntity
 import com.example.itexblog.ui.model.PostRepository
+import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 
 class PostViewModel(application: Application): AndroidViewModel(application) {
 
@@ -29,6 +30,29 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
 
     fun getAllPosts():LiveData<List<PostEntity?>?>?{
         return allPosts
+    }
+
+
+    private var allComments = repository.allComments
+
+    fun insertComment(commentsEntity: CommentsEntity, application: Application){
+        repository.insertComment(commentsEntity, application)
+    }
+
+    fun updateComment(commentsEntity: CommentsEntity, application: Application){
+        repository.updateComment(commentsEntity, application)
+    }
+
+    fun deleteComment(commentsEntity: CommentsEntity, application: Application){
+        repository.deleteComment(commentsEntity, application)
+    }
+
+    fun deleteAllComments(application: Application){
+        repository.deleteAllComments(application)
+    }
+
+    fun getAllComments(): LiveData<List<CommentsEntity?>?>?{
+        return allComments
     }
 
 }

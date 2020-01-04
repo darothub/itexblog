@@ -1,6 +1,8 @@
 package com.example.itexblog.ui.model
 
 import android.app.Application
+import com.example.itexblog.ui.model.commentmodel.CommentDao
+import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 import com.example.itexblog.ui.utils.CoroutineTaskSingleton
 
 class PostRepository(application: Application) {
@@ -21,7 +23,28 @@ class PostRepository(application: Application) {
         CoroutineTaskSingleton.getInstance(application).deleteAllTask(postDao)
     }
 
+
+    fun insertComment(comment: CommentsEntity?, application: Application){
+        CoroutineTaskSingleton.getInstance(application).insertCommentTask(commentDao, comment!!)
+    }
+
+    fun updateComment(comment: CommentsEntity?, application: Application){
+        CoroutineTaskSingleton.getInstance(application).updateCommentTask(commentDao, comment!!)
+    }
+
+    fun deleteComment(comment: CommentsEntity?, application: Application){
+        CoroutineTaskSingleton.getInstance(application).deleteCommentTask(commentDao, comment!!)
+    }
+
+    fun deleteAllComments(application: Application){
+        CoroutineTaskSingleton.getInstance(application).deleteAllCommentTask(commentDao)
+    }
+
     private val database = PostDatabase.getInstance(application)
+    
+    private val commentDao: CommentDao =database!!.commentDao()
+    var allComments =commentDao.allComments
+
     private val postDao:PostDao =database!!.postDao()
     var allPosts =postDao.allPosts
 }

@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import java.io.File
  * A simple [Fragment] subclass.
  */
 class ReadPostFragment : Fragment() {
+    var i =0
 
     private var postViewModel: PostViewModel?= null
     var incomingPost:PostEntity?= null
@@ -45,6 +47,7 @@ class ReadPostFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
+        //Receives arguments from other fragment
         arguments?.let{
             incomingPost =  ReadPostFragmentArgs.fromBundle(it).post
         }
@@ -55,6 +58,7 @@ class ReadPostFragment : Fragment() {
         read_num_of_likes.setText(incomingPost?.likes.toString())
 
 
+        //When incoming post has an image
         if(incomingPost?.image != "null") {
             val stringImageToUri = Uri.parse(incomingPost?.image)
             val imagePath = FileUtils.getPath(context, stringImageToUri)
@@ -65,9 +69,11 @@ class ReadPostFragment : Fragment() {
             read_divider.visibility = View.VISIBLE
         }
 
+        //On click listener for editing
         read_edit_btn.setOnClickListener {
             toEdit(it, incomingPost)
         }
+        //On click listener for deleting
         read_delete_btn.setOnClickListener {
             AlertDialog.Builder(it.context).apply {
                 setTitle("Are you sure?")
@@ -87,9 +93,31 @@ class ReadPostFragment : Fragment() {
 
 
         }
+        //On click listener for liking
         read_like_btn.setOnClickListener {
             PostAdapter.PostHolder(view!!).likesCount(incomingPost, context!!)
             read_num_of_likes.setText(incomingPost?.likes.toString())
+        }
+        //On click listener for double tap to like post
+        reader_card_container.setOnClickListener {
+            i=i.plus(1)
+            val handler = Handler()
+            val runn = Runnable {
+                i = 0
+            }
+            if(i == 1){
+                Toast.makeText(context, "Single Clicked", Toast.LENGTH_SHORT).show()
+                handler.postDelayed(runn, 400)
+            }
+            else if(i == 2){
+                Toast.makeText(context, "Double Clicked", Toast.LENGTH_SHORT).show()
+                //update post
+                PostAdapter.PostHolder(view!!).likesCount(incomingPost, context!!)
+                read_num_of_likes.setText(incomingPost?.likes.toString())
+
+
+            }
+            return@setOnClickListener
         }
 
 
@@ -97,6 +125,7 @@ class ReadPostFragment : Fragment() {
     }
 
 
+    //Custom function to navigate to add post fragment for editing
     private fun toEdit(view:View, postEntity: PostEntity?){
         val action = ReadPostFragmentDirections.actionReadPostFragmentToAddPostFragment()
         action.post = postEntity

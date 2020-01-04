@@ -4,7 +4,6 @@ package com.example.itexblog.ui
 import android.app.AlertDialog
 import android.app.Application
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +29,6 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 class BlogActivitiesFragment : Fragment() {
-    var i =0
 
     private var postViewModel: PostViewModel?= null
     private var adapter:PostAdapter? = null
@@ -56,8 +54,10 @@ class BlogActivitiesFragment : Fragment() {
 //        val adapter = PostAdapter()
 //        recyclerView.adapter = adapter
 
+        //View model to observe life data
         postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
 
+        //Getting current day
         val sdf =SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
         val currentDate = sdf.format(Date())
 
@@ -75,6 +75,7 @@ class BlogActivitiesFragment : Fragment() {
 //                """.trim().trimMargin(), null, currentDate
 //        )
 
+        //On click listener to navigate to add post frag
         addFabBtn.setOnClickListener {
 
             addNewPost(it)
@@ -87,34 +88,24 @@ class BlogActivitiesFragment : Fragment() {
 //
 //        postViewModel!!.insert(post2, Application())
 //        postViewModel!!.deleteAll(Application())
+
+        //Observing changes from the database via the view model
         postViewModel!!.getAllPosts()?.observe(this, object: Observer<List<PostEntity?>?> {
             override fun onChanged(postEntity: List<PostEntity?>?) {
                 recyclerView.layoutManager = LinearLayoutManager(context)
                 recyclerView.setHasFixedSize(true)
 
+                //An instance of the adapter
                 adapter = PostAdapter(postEntity, object: PostAdapter.OnPostListener{
                     override fun onPostClick(postEntity: PostEntity?) {
                         view?.let{
-//                            readPost(postEntity, it)
-                        }
-                        i=i.plus(1)
-                        val handler = Handler()
-                        val runn = Runnable {
-                             i = 0
-                        }
-                        if(i == 1){
-                            Toast.makeText(context, "Single Clicked", Toast.LENGTH_SHORT).show()
-                            handler.postDelayed(runn, 400)
-                        }
-                        else if(i == 2){
-                            Toast.makeText(context, "Double Clicked", Toast.LENGTH_SHORT).show()
-                            PostAdapter.PostHolder(view!!).likesCount(postEntity, context!!)
-
+                            readPost(postEntity, it)
                         }
                     }
 
 
                 })
+                //Connecting recycler view to adapter
                 recyclerView.adapter = adapter
                 adapter?.setPost(postEntity)
 //                Toast.makeText(context, "$postEntity", Toast.LENGTH_LONG).show()
@@ -123,6 +114,7 @@ class BlogActivitiesFragment : Fragment() {
 
         })
 
+        //Swipe listener for left swipe(to delete)
         ItemTouchHelper(object :ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -152,6 +144,7 @@ class BlogActivitiesFragment : Fragment() {
 
         }).attachToRecyclerView(recyclerView)
 
+        //Swipe listener for right swipe(to read post)
         ItemTouchHelper(object :ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -169,13 +162,14 @@ class BlogActivitiesFragment : Fragment() {
         }).attachToRecyclerView(recyclerView)
     }
 
+    //Custom function to navigate to add post fragment
     fun addNewPost(view: View){
 
         val action = BlogActivitiesFragmentDirections.actionBlogActivitiesFragmentToAddPostFragment2()
         Navigation.findNavController(view).navigate(action)
 
     }
-
+    //Custom function to navigate to read post fragment
     fun readPost(postEntity: PostEntity?, view: View){
 
 

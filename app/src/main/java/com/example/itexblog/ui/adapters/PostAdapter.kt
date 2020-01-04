@@ -21,9 +21,7 @@ import kotlinx.coroutines.launch
 
 
 class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnPostListener):RecyclerView.Adapter<PostAdapter.PostHolder>() {
-
-
-
+    //To inflate post row in the recycler view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
 
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_row, parent, false)
@@ -35,15 +33,18 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
         return posts!!.size
     }
 
+    // To set current post list
     fun setPost(posts: List<PostEntity?>?){
         this.posts =posts as List<PostEntity>
         notifyDataSetChanged()
     }
 
+    //To get position of post
     fun getPostAt(position: Int):PostEntity?{
         return posts?.get(position)
     }
 
+    //To bind xml items in post row
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
         posts?.let{
             val currentPost = it[position]
@@ -74,8 +75,6 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
     }
 
 
-
-
     class PostHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private var stringImageToUri:Uri?=null
 
@@ -90,6 +89,7 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
 
 
 
+        //Function to bind each post with a listener for click
         fun bind(postEntity: PostEntity?, listener: OnPostListener){
             val postViewModel: PostViewModel?= null
             title.setText(postEntity?.title)
@@ -100,10 +100,9 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
             }
 
 
+            //when post image is not null
             if(postEntity?.image != "null"){
                 stringImageToUri = Uri.parse(postEntity?.image)
-
-
 
                 Picasso.get().load(stringImageToUri).into(post_image)
                 post_image.visibility = View.VISIBLE
@@ -113,6 +112,7 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
 
             likeBtn.setOnClickListener{
                 likesCount(postEntity, it.context)
+                return@setOnClickListener
 
             }
 
@@ -133,12 +133,14 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
 
         }
 
+        //Custom to handle like button on click
         fun likesCount(postEntity: PostEntity?, context: Context){
             postEntity!!.likes = postEntity.likes?.plus(1)
             Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
             CoroutineScope(IO).launch {
                 PostDatabase.getInstance(context)?.postDao()?.update(postEntity)
             }
+
         }
 
 
