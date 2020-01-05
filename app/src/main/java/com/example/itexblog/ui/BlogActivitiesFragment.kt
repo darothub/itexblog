@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.itexblog.R
 import com.example.itexblog.ui.adapters.PostAdapter
 import com.example.itexblog.ui.model.PostEntity
+import com.example.itexblog.ui.model.PostEntityWithCommentEntity
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import kotlinx.android.synthetic.main.fragment_blog_activities.*
 import java.text.SimpleDateFormat
@@ -114,6 +115,17 @@ class BlogActivitiesFragment : Fragment() {
 
         })
 
+        postViewModel!!.getPostWithComments(Application())?.observe(this, object :Observer<List<PostEntityWithCommentEntity>>{
+            override fun onChanged(t: List<PostEntityWithCommentEntity>?) {
+                Toast.makeText(context, "hey: $t", Toast.LENGTH_SHORT).show()
+
+            }
+
+        })
+
+
+
+
         //Swipe listener for left swipe(to delete)
         ItemTouchHelper(object :ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
             override fun onMove(
@@ -160,6 +172,7 @@ class BlogActivitiesFragment : Fragment() {
             }
 
         }).attachToRecyclerView(recyclerView)
+
     }
 
     //Custom function to navigate to add post fragment
@@ -178,6 +191,8 @@ class BlogActivitiesFragment : Fragment() {
             Navigation.findNavController(view).navigate(action)
 
     }
+
+
 
 
 

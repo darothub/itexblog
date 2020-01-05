@@ -2,6 +2,7 @@ package com.example.itexblog.ui
 
 
 import android.app.AlertDialog
+import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -11,11 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.itexblog.R
+import com.example.itexblog.ui.adapters.CommentAdapter
 import com.example.itexblog.ui.adapters.PostAdapter
 import com.example.itexblog.ui.model.PostDatabase
 import com.example.itexblog.ui.model.PostEntity
+import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 import com.example.itexblog.ui.utils.FileUtils
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import com.squareup.picasso.Picasso
@@ -23,7 +29,6 @@ import kotlinx.android.synthetic.main.fragment_read_post.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 
 /**
  * A simple [Fragment] subclass.
@@ -33,6 +38,8 @@ class ReadPostFragment : Fragment() {
 
     private var postViewModel: PostViewModel?= null
     var incomingPost:PostEntity?= null
+    private var adapter:PostAdapter? = null
+    private var commentAdapter:CommentAdapter?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,17 +63,54 @@ class ReadPostFragment : Fragment() {
         read_date.text = incomingPost?.date
         read_body.setText(incomingPost?.body)
         read_num_of_likes.setText(incomingPost?.likes.toString())
+        read_comments.setText("${incomingPost?.comments} Comments")
 
 
         //When incoming post has an image
         if(incomingPost?.image != "null") {
-            val stringImageToUri = Uri.parse(incomingPost?.image)
-            val imagePath = FileUtils.getPath(context, stringImageToUri)
-            val imageFile = File(imagePath)
+            incomingPost?.image?.let {
+                val stringImageToUri = Uri.parse(it)
+                val imagePath = FileUtils.getPath(context, stringImageToUri)
+//                val imageFile = File(imagePath)
 
-            Picasso.get().load(stringImageToUri).into(read_image)
-            read_image.visibility = View.VISIBLE
-            read_divider.visibility = View.VISIBLE
+                Picasso.get().load(stringImageToUri).into(read_image)
+                read_image.visibility = View.VISIBLE
+                read_divider.visibility = View.VISIBLE
+            }
+
+
+        }
+
+
+        //Observing comments
+        //View model to observe life data
+        postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
+        incomingPost!!.id.let {
+            postViewModel!!.getAllCommentsByIdLive(Application(), it)?.observe(this, object:
+                Observer<List<CommentsEntity?>?> {
+                override fun onChanged(commentsEntity: List<CommentsEntity?>?) {
+                    Toast.makeText(context, "$commentsEntity", Toast.LENGTH_SHORT).show()
+
+    //                comment_recyclerView2.visibility = View.VISIBLE
+                    comment_recyclerView2.layoutManager = LinearLayoutManager(context)
+                    comment_recyclerView2.setHasFixedSize(true)
+
+                    //An instance of the adapter
+                    commentAdapter = CommentAdapter(commentsEntity, object :CommentAdapter.OnCommentListener{
+                        override fun onCommentClick(comment: CommentsEntity?) {
+                            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+                        }
+
+                    })
+                    //Connecting recycler view to adapter
+                    comment_recyclerView2.adapter = commentAdapter
+                    commentAdapter?.setComment(commentsEntity)
+
+                    read_comments.setText("${commentsEntity?.size} Comments")
+
+                }
+
+            })
         }
 
         //On click listener for editing
@@ -120,6 +164,27 @@ class ReadPostFragment : Fragment() {
             return@setOnClickListener
         }
 
+        //Click listener to read comments
+        read_comments.setOnClickListener {
+            seeComments()
+        }
+
+
+
+
+        // Listening to onclick on menu item(s)
+        read_toolbar.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.addComment ->{
+                    val action = ReadPostFragmentDirections.actionReadPostFragmentToAddPostFragment()
+                    action.addComment = true
+                    action.post = incomingPost
+                    Navigation.findNavController(view!!).navigate(action)
+
+                }
+            }
+            true
+        }
 
 
     }
@@ -154,8 +219,17 @@ class ReadPostFragment : Fragment() {
         }
 
     }
+    private fun seeComments(){
+        if (comment_recyclerView2.visibility == View.VISIBLE){
+            comment_recyclerView2.visibility = View.GONE
+        }
+        else{
+            comment_recyclerView2.visibility = View.VISIBLE
+        }
+    }
 
 
 }
+
 
 

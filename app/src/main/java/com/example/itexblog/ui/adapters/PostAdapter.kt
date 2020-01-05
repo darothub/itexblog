@@ -17,6 +17,7 @@ import com.example.itexblog.ui.viewmodel.PostViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 
 
@@ -35,7 +36,7 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
 
     // To set current post list
     fun setPost(posts: List<PostEntity?>?){
-        this.posts =posts as List<PostEntity>
+        this.posts = posts as List<PostEntity>
         notifyDataSetChanged()
     }
 
@@ -83,9 +84,10 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
         var post_image = itemView.findViewById<ImageView>(R.id.post_image)
         var num_of_likes = itemView.findViewById<TextView>(R.id.num_of_likes)
         var post_date =itemView.findViewById<TextView>(R.id.post_date)
-        var divider = itemView.findViewById<View>(R.id.divider)
+        var divider = itemView.findViewById<View>(R.id.divider2)
         var deleteBtn = itemView.findViewById<View>(R.id.delete_btn)
         var likeBtn = itemView.findViewById<ImageView>(R.id.like_btn)
+        var postComments = itemView.findViewById<TextView>(R.id.post_comments)
 
 
 
@@ -98,12 +100,28 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
             postEntity?.likes?.let{
                 num_of_likes.setText(it.toString())
             }
+            CoroutineScope(Main).launch {
+
+                var numOfComments = CommentAdapter.CommentHolder(itemView).getCommentsList(postComments.context, postEntity!!)
+
+                Log.i("Commentnum", "$numOfComments")
+
+                if(numOfComments == null){
+                    numOfComments = postEntity?.comments
+                }else{
+                    postEntity?.comments = numOfComments
+
+                }
+                postComments.setText("$numOfComments Comments")
+            }
+
 
 
             //when post image is not null
             if(postEntity?.image != "null"){
                 stringImageToUri = Uri.parse(postEntity?.image)
 
+//                post_image.setImageURI(Uri.parse(postEntity?.image))
                 Picasso.get().load(stringImageToUri).into(post_image)
                 post_image.visibility = View.VISIBLE
                 divider.visibility = View.VISIBLE
@@ -142,6 +160,8 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
             }
 
         }
+
+
 
 
     }

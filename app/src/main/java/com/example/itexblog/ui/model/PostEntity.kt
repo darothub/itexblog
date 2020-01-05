@@ -11,12 +11,15 @@ class PostEntity(
     var image: String? = null,
     var date: String?
 
+
 ): Serializable {
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 
     var likes:Int? = 0
+
+    var comments:Int?=0
 
 
 

@@ -18,6 +18,10 @@ interface PostDao {
     @Query("DELETE FROM postentity")
     suspend fun deleteAllPosts()
 
+    @Transaction
+    @Query("SELECT * FROM postentity")
+    fun getPostWithComments():LiveData<List<PostEntityWithCommentEntity>>?
+
     @get:Query(
         "SELECT * FROM postentity"
     )

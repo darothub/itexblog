@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.itexblog.ui.model.commentmodel.CommentDao
 import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 
-@Database(entities = [PostEntity::class, CommentsEntity::class], version = 4, exportSchema = false)
+@Database(entities = [PostEntity::class, CommentsEntity::class], version = 8, exportSchema = false)
 abstract class PostDatabase:RoomDatabase() {
 
     abstract fun postDao(): PostDao

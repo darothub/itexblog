@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.itexblog.ui.model.PostEntity
+import com.example.itexblog.ui.model.PostEntityWithCommentEntity
 import com.example.itexblog.ui.model.PostRepository
 import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 
@@ -53,6 +54,12 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
 
     fun getAllComments(): LiveData<List<CommentsEntity?>?>?{
         return allComments
+    }
+    fun getAllCommentsByIdLive(application: Application, id:Int):LiveData<List<CommentsEntity?>?>?{
+        return repository.getCommentsByIdLive(application, id)
+    }
+    fun getPostWithComments(application: Application):LiveData<List<PostEntityWithCommentEntity>>?{
+        return repository.getPostWithComments(application)
     }
 
 }

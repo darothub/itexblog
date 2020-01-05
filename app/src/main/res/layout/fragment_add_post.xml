@@ -145,6 +145,17 @@
             android:background="@color/colorPrimaryDark"
             android:text="Update"
             android:textColor="@color/colorPrimary" />
+        <Button
+            android:id="@+id/add_comment_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_links"
+            android:layout_marginTop="10dp"
+            android:height="50dp"
+            android:visibility="gone"
+            android:background="@color/colorPrimaryDark"
+            android:text="Add comment"
+            android:textColor="@color/colorPrimary" />
 
 
     </RelativeLayout>

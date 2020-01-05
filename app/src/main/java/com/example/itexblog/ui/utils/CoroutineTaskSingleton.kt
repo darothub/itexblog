@@ -1,6 +1,7 @@
 package com.example.itexblog.ui.utils
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.example.itexblog.ui.model.PostDao
 import com.example.itexblog.ui.model.PostEntity
 import com.example.itexblog.ui.model.commentmodel.CommentDao
@@ -47,6 +48,12 @@ class CoroutineTaskSingleton (application: Application) {
         }
     }
 
+    fun getPostWithComments(postDao:PostDao){
+        CoroutineScope(Dispatchers.IO).launch {
+            postDao.getPostWithComments()
+        }
+    }
+
     fun insertCommentTask(commentDao: CommentDao, commentsEntity: CommentsEntity){
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -76,5 +83,13 @@ class CoroutineTaskSingleton (application: Application) {
             commentDao.deleteAllComments()
         }
 
+    }
+
+    fun getAllCommentsByIdLive(commentDao: CommentDao, id:Int): LiveData<List<CommentsEntity?>?>?{
+        var comments:LiveData<List<CommentsEntity?>?>?=null
+        CoroutineScope(Dispatchers.IO).launch {
+            comments = commentDao.getCommentByIdLive(id)
+        }
+        return comments
     }
 }

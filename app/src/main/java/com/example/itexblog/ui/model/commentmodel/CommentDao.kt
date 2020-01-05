@@ -21,4 +21,13 @@ interface CommentDao {
         "SELECT * FROM commentsentity"
     )
     val allComments: LiveData<List<CommentsEntity?>?>?
+
+    @Query("SELECT * FROM commentsentity")
+    suspend fun getCommentList():List<CommentsEntity>
+
+    @Query("SELECT * FROM commentsentity WHERE post_id = :id")
+    suspend fun getCommentById(id:Int):List<CommentsEntity>
+
+    @Query("SELECT * FROM commentsentity WHERE post_id = :id")
+    fun getCommentByIdLive(id:Int):LiveData<List<CommentsEntity?>?>?
 }

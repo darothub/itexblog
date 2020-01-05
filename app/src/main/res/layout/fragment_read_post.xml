@@ -1,152 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.ReadPostFragment">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/reader_card_container"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/read_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="5dp">
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimaryDark"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/read_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                app:layout_collapseMode="pin"
+                app:menu="@menu/read_menu">
+
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
-
-            <RelativeLayout
-                android:id="@+id/reader_header_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/read_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@id/read_date"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Title"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/read_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:ellipsize="end"
-                    android:text="Date" />
-            </RelativeLayout>
+            android:layout_height="match_parent"
+            android:layout_below="@id/read_appbar"
+            android:layout_marginTop="50dp">
 
 
-
-            <ImageView
-                android:id="@+id/read_image"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_below="@id/reader_header_text"
-                android:layout_marginTop="5dp"
-                android:scaleType="fitXY"
-                android:visibility="gone"
-
-                />
-
-            <View
-                android:id="@+id/read_divider"
-                style="@style/Divider"
-                android:layout_below="@id/read_image"
-                android:visibility="gone"
-                android:layout_marginTop="5dp" />
-
-            <EditText
-                android:id="@+id/read_body"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/reader_card_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/read_image"
-                android:layout_marginTop="10dp"
-                android:gravity="start|end"
-                android:inputType="textMultiLine"
-                android:scrollbars="vertical"
-                android:clickable="false"
-                android:focusable="false"
-                android:textDirection="ltr"
-                android:text="@string/body_message"
-                android:textAlignment="viewStart" />
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <RelativeLayout
+                        android:id="@+id/reader_header_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/read_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@id/read_date"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Title"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/read_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:ellipsize="end"
+                            android:text="Date" />
+                    </RelativeLayout>
 
 
-            <View
-                android:id="@+id/read_divider2"
-                style="@style/Divider"
-                android:layout_below="@id/read_body"
-                android:layout_marginTop="5dp"
-                />
+                    <ImageView
+                        android:id="@+id/read_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_below="@id/reader_header_text"
+                        android:layout_marginTop="5dp"
+                        android:scaleType="fitXY"
+                        android:visibility="gone"
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+                        />
+
+                    <View
+                        android:id="@+id/read_divider"
+                        style="@style/Divider"
+                        android:layout_below="@id/read_image"
+                        android:layout_marginTop="5dp"
+                        android:visibility="gone" />
+
+                    <EditText
+                        android:id="@+id/read_body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/read_image"
+                        android:layout_marginTop="10dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:gravity="start|end"
+                        android:inputType="textMultiLine"
+                        android:scrollbars="vertical"
+                        android:text="@string/body_message"
+                        android:textAlignment="viewStart"
+                        android:textDirection="ltr" />
+
+
+                    <View
+                        android:id="@+id/read_divider2"
+                        style="@style/Divider"
+                        android:layout_below="@id/read_body"
+                        android:layout_marginTop="5dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/read_divider2"
+
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/read_edit_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/edit_btn"
+                            app:srcCompat="@drawable/ic_edit_white" />
+
+                        <ImageView
+                            android:id="@+id/read_like_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_toEndOf="@id/read_delete_btn"
+                            android:contentDescription="@string/like_btn"
+                            app:srcCompat="@drawable/ic_favorite_white" />
+
+
+                        <ImageView
+                            android:id="@+id/read_delete_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_toEndOf="@id/read_edit_btn"
+                            android:contentDescription="@string/delete_btn"
+                            app:srcCompat="@drawable/ic_delete_white" />
+
+                        <TextView
+                            android:id="@+id/read_num_of_likes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/read_like_btn"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <TextView
+                            android:id="@+id/read_comments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="@string/comments"
+                            android:textColor="@color/colorPrimaryDark" />
+
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comment_recyclerView2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/read_divider2"
-
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/read_edit_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/edit_btn"
-                    app:srcCompat="@drawable/ic_edit_white" />
-
-                <ImageView
-                    android:id="@+id/read_like_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/read_delete_btn"
-                    android:contentDescription="@string/like_btn"
-                    app:srcCompat="@drawable/ic_favorite_white" />
-
-
-                <ImageView
-                    android:id="@+id/read_delete_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/read_edit_btn"
-                    android:contentDescription="@string/delete_btn"
-                    app:srcCompat="@drawable/ic_delete_white" />
-
-                <TextView
-                    android:id="@+id/read_num_of_likes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/read_like_btn"
-                    android:gravity="center"
-                    android:layout_centerVertical="true"
-                    android:text="0"
-                    android:textColor="@color/colorPrimaryDark" />
-
-                <TextView
-                    android:id="@+id/read_comments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="@string/comments"
-                    android:textColor="@color/colorPrimaryDark" />
-
-
-            </RelativeLayout>
-
+                android:layout_below="@id/reader_card_container"
+                android:layout_margin="15dp"
+                android:visibility="gone"
+                tools:listitem="@layout/comment_row"
+                tools:visibility="visible" />
         </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
-
-    </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

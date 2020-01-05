@@ -4,10 +4,13 @@ package com.example.itexblog.ui
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +23,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostDatabase
 import com.example.itexblog.ui.model.PostEntity
+import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 import com.example.itexblog.ui.utils.FileUtils
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import com.squareup.picasso.Picasso
@@ -43,6 +47,8 @@ class AddPostFragment : Fragment() {
     private var imagePath:String?=null
     private var imageFile:File? = null
     private var currentDate:String? = null
+    private var addComment:Boolean?=null
+    private var dataIntent:Intent?=null
 
     private var postViewModel: PostViewModel?= null
     override fun onCreateView(
@@ -60,7 +66,7 @@ class AddPostFragment : Fragment() {
 
         arguments?.let{
             incomingPost =  AddPostFragmentArgs.fromBundle(it).post
-
+            addComment = AddPostFragmentArgs.fromBundle(it).addComment
         }
 
 
@@ -92,7 +98,7 @@ class AddPostFragment : Fragment() {
 
 
         //Checking if the content is an old post for update
-        if(incomingPost != null){
+        if(incomingPost != null && addComment == false){
             title.setText(incomingPost?.title)
             body.setText(incomingPost?.body)
             update_post_btn.visibility = View.VISIBLE
@@ -119,7 +125,8 @@ class AddPostFragment : Fragment() {
 
                 val updateRequestResult = updatePost(Application(), title, body,
                     if(imageUriLoader.toString() != "null") imageUriLoader.toString()
-                    else if(removedImage!!) "null" else incomingPost?.image, id!!)
+                    else if(removeImage(image_placeholder)) "null" else incomingPost?.image,
+                    id)
 
                 //When update is successful
                 if(updateRequestResult){
@@ -129,6 +136,29 @@ class AddPostFragment : Fragment() {
                 }
 
 
+            }
+        }
+        else if(addComment == true){
+            add_comment_btn.visibility = View.VISIBLE
+            submit_post_btn.visibility = View.GONE
+            image_placeholder.visibility = View.GONE
+            addImageBtn.visibility = View.GONE
+            title.visibility = View.GONE
+            body.setHint(resources.getString(R.string.comment))
+            body.requestFocus()
+            cameraBtn.visibility = View.GONE
+
+
+            add_comment_btn.setOnClickListener {
+                val message = body.text.toString()
+                val addCommentRequest = saveComment(Application(), message, incomingPost!!)
+
+                if(addCommentRequest){
+                    val action = AddPostFragmentDirections.toReadComments()
+                    action.post = incomingPost
+
+                    Navigation.findNavController(it).navigate(action)
+                }
             }
         }
 
@@ -150,12 +180,15 @@ class AddPostFragment : Fragment() {
 
 
             val saveRequest = savePost(Application(), title, body, imageUriLoader.toString())
-            Toast.makeText(context, "${imageUriLoader.toString()} is updated", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "${imageUriLoader.toString()} is updated", Toast.LENGTH_SHORT).show()
 
             //when post request is successful
             if(saveRequest){
                 val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
                 Navigation.findNavController(it).navigate(action)
+            }
+            else{
+                Toast.makeText(context, "Empty field error", Toast.LENGTH_LONG).show()
             }
 
 //            Toast.makeText(context, imageUriLoader.toString(), Toast.LENGTH_SHORT).show()
@@ -174,10 +207,52 @@ class AddPostFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        context?.let{
-            loadImage(requestCode, image_placeholder, it, data)
+        dataIntent = data
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE), 202)
         }
+        else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 200)
+        }
+        else{
+            context?.let{
+                loadImage(requestCode, image_placeholder, it, data)
+            }
+        }
+//        if(ContextCompat.checkSelfPermission(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//            != PackageManager.PERMISSION_GRANTED){
+//            Toast.makeText(context, "You need to grant storage permission", Toast.LENGTH_SHORT).show()
+//        }
+//        context?.let{
+//            loadImage(requestCode, image_placeholder, it, data)
+//        }
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        val CAMERA_REQUEST = 201
+        val GALLERY_REQUEST = 200
+
+        when(requestCode){
+            202 -> {
+                if(grantResults.size > 0 && permissions[0].equals(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                    if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                        context?.let{
+                            loadImage(CAMERA_REQUEST, image_placeholder, it, dataIntent)
+                            loadImage(GALLERY_REQUEST, image_placeholder, it, dataIntent)
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
     //Custom function to open gallery
@@ -186,10 +261,11 @@ class AddPostFragment : Fragment() {
         intent.type = "image/*"
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
+
         if(intent.resolveActivity(activity!!.packageManager) != null){
             val mimeTypes = arrayOf("image/jpeg", "image/png")
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-            startActivityForResult(intent, 201)
+            startActivityForResult(intent, 200)
         }
 
 
@@ -198,7 +274,7 @@ class AddPostFragment : Fragment() {
     //Custom function to open camera
     private fun openCamera(){
         try{
-            val CAMERA_REQUEST = 200
+            val CAMERA_REQUEST = 201
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(intent, CAMERA_REQUEST)
         }
@@ -210,9 +286,9 @@ class AddPostFragment : Fragment() {
 
     //Custom function to react to request from camera and picture result
     private fun loadImage(requestCode: Int, imageView: ImageView, context: Context, data: Intent?){
-        //When image is from the camera
-        if(requestCode == 200){
-            try{
+        try{
+
+            if(requestCode == 201){
 
                 //Convert result to bitmap
                 val image = data!!.extras?.get("data") as Bitmap
@@ -223,16 +299,13 @@ class AddPostFragment : Fragment() {
 
                 //Extract Uri version from Bitmap
                 imageUriLoader = getImageUriFromBitmap(context, image)
-            }
-            catch (e:Exception){
-                Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+
+
             }
 
-        }
+            //When image is from the gallery
+            else if(requestCode == 200){
 
-        //When image is from the gallery
-        else if(requestCode == 201){
-            try{
                 //Extract Uri version from data
                 val imageUri = data!!.data
 
@@ -240,21 +313,26 @@ class AddPostFragment : Fragment() {
                 imagePath = FileUtils.getPath(context, imageUri)
                 imageUriLoader = imageUri
 
-                imageFile = File(imagePath)
 
 
                 imageView.visibility = View.VISIBLE
+//                Picasso.get().load(imageUri).into(imageView)
                 imageView.setImageURI(imageUri)
 
+
             }
-            catch (e:Exception){
-                Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+            else{
+                Toast.makeText(context, "Invalid request", Toast.LENGTH_SHORT).show()
             }
 
         }
-        else{
-            Toast.makeText(context, "Invalid request", Toast.LENGTH_SHORT).show()
+        catch (e:Exception){
+
+            Log.i("Picture/Camera", "Please try again: ${e.message}")
+//            Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+        //When image is from the camera
+
     }
 
     private fun savePost(application: Application, title:String, body:String, image:String?=null): Boolean{
@@ -287,14 +365,16 @@ class AddPostFragment : Fragment() {
     }
 
 
-    private fun updatePost(context: Context?, title: String, body: String, image: String?, id:Int):Boolean{
+    private fun updatePost(context: Context?, title: String, body: String, image: String?, id: Int?):Boolean{
 
         return if(title.isNotEmpty() && body.isNotEmpty()){
             try{
                 CoroutineScope(Main).launch {
                     //                    postViewModel!!.update(postEntity, application)
                     val updatedPost = PostEntity(title, body, image, currentDate)
-                    updatedPost.id = id
+                    if (id != null) {
+                        updatedPost.id = id
+                    }
                     PostDatabase.getInstance(context!!)?.postDao()?.update(updatedPost)
                 }
 
@@ -322,7 +402,26 @@ class AddPostFragment : Fragment() {
         }
 
 
+    }
 
+    private fun saveComment(application: Application, message:String, postEntity: PostEntity): Boolean{
+
+        val sdf =SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
+        val currentDate = sdf.format(Date())
+
+        if(message.isNotEmpty()){
+            try{
+                val comment =  CommentsEntity(message, postEntity.id, currentDate)
+                postViewModel!!.insertComment(comment, application)
+            }
+            catch (e:Exception){
+                Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+            return true
+
+        }else{
+            return false
+        }
 
 
     }

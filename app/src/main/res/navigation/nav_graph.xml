@@ -38,6 +38,13 @@
             android:defaultValue="@null"
             app:argType="com.example.itexblog.ui.model.PostEntity"
             app:nullable="true" />
+        <argument
+            android:name="addComment"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/toReadComments"
+            app:destination="@id/readPostFragment" />
     </fragment>
 
 
@@ -57,5 +64,9 @@
         <action
             android:id="@+id/toBlogPost"
             app:destination="@id/blogActivitiesFragment" />
+        <argument
+            android:name="incomingComment"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 </navigation>

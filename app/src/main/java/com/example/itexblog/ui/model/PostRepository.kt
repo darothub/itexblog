@@ -1,6 +1,7 @@
 package com.example.itexblog.ui.model
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.example.itexblog.ui.model.commentmodel.CommentDao
 import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 import com.example.itexblog.ui.utils.CoroutineTaskSingleton
@@ -38,6 +39,14 @@ class PostRepository(application: Application) {
 
     fun deleteAllComments(application: Application){
         CoroutineTaskSingleton.getInstance(application).deleteAllCommentTask(commentDao)
+    }
+
+    fun getCommentsByIdLive(application: Application, id:Int): LiveData<List<CommentsEntity?>?>?{
+        return PostDatabase.getInstance(application)?.commentDao()?.getCommentByIdLive(id)
+    }
+
+    fun getPostWithComments(application: Application):LiveData<List<PostEntityWithCommentEntity>>?{
+        return PostDatabase.getInstance(application)?.postDao()?.getPostWithComments()
     }
 
     private val database = PostDatabase.getInstance(application)
