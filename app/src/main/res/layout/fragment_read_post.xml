@@ -71,18 +71,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
-                            android:layout_toStartOf="@id/read_date"
                             android:ellipsize="end"
-                            android:maxLines="1"
+                            android:maxLines="@android:integer/status_bar_notification_info_maxnum"
                             android:text="Title"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/read_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
+                            android:layout_below="@id/read_title"
                             android:ellipsize="end"
                             android:text="Date" />
                     </RelativeLayout>
@@ -194,7 +193,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/reader_card_container"
                 android:layout_margin="15dp"
-                android:visibility="gone"
                 tools:listitem="@layout/comment_row"
                 tools:visibility="visible" />
         </RelativeLayout>

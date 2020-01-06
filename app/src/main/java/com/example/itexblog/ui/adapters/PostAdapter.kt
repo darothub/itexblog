@@ -52,26 +52,6 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
             holder.bind(it[position], listener)
         }
 
-//        holder.title.text = currentPost.title
-//        holder.body.text = currentPost.body
-//        holder.post_date.text = currentPost.date
-//        holder.num_of_likes.text = currentPost.likes.toString()
-
-
-//
-//        val image = currentPost.image
-//
-//        if(image != "null"){
-//            val stringImageToUri = Uri.parse(currentPost.image.toString())
-//            stringImageToUri.let {
-//                Picasso.get().load(it).into(holder.post_image)
-//            }
-//            holder.post_image.visibility = View.VISIBLE
-//            holder.divider.visibility = View.VISIBLE
-//        }
-//        holder.card.setOnClickListener {
-//            val action = Navigation1.findNavController(it)
-//        }
 
     }
 

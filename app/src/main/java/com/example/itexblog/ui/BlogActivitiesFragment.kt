@@ -45,36 +45,14 @@ class BlogActivitiesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        //attach nav-controller to the parent view-group
-//        val navController = Navigation.findNavController(post_appbar)
-//
-//        NavigationUI.setupWithNavController(post_toolbar, navController)
 
-//        recyclerView.layoutManager = LinearLayoutManager(context)
-//        recyclerView.setHasFixedSize(true)
-//        val adapter = PostAdapter()
-//        recyclerView.adapter = adapter
-
-        //View model to observe life data
+        //View model to observe live data
         postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
 
         //Getting current day
         val sdf =SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
         val currentDate = sdf.format(Date())
 
-//        val post1 = PostEntity("The news",
-//                """I have been a fan of ManchesterUnited for decades
-//                    I have been a fan of ManchesterUnited for decades
-//                    I have been a fan of ManchesterUnited for decades
-//                """.trim().trimMargin(), null, currentDate
-//            )
-//
-//        val post2 = PostEntity("The news",
-//            """I have been a fan of ManchesterUnited for years
-//                    I have been a fan of ManchesterUnited for years
-//                    I have been a fan of ManchesterUnited for years
-//                """.trim().trimMargin(), null, currentDate
-//        )
 
         //On click listener to navigate to add post frag
         addFabBtn.setOnClickListener {
@@ -117,7 +95,7 @@ class BlogActivitiesFragment : Fragment() {
 
         postViewModel!!.getPostWithComments(Application())?.observe(this, object :Observer<List<PostEntityWithCommentEntity>>{
             override fun onChanged(t: List<PostEntityWithCommentEntity>?) {
-                Toast.makeText(context, "hey: $t", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "hey: $t", Toast.LENGTH_SHORT).show()
 
             }
 
@@ -184,11 +162,9 @@ class BlogActivitiesFragment : Fragment() {
     }
     //Custom function to navigate to read post fragment
     fun readPost(postEntity: PostEntity?, view: View){
-
-
-            val action = BlogActivitiesFragmentDirections.actionBlogActivitiesFragmentToReadPostFragment()
-            action.post = postEntity
-            Navigation.findNavController(view).navigate(action)
+        val action = BlogActivitiesFragmentDirections.actionBlogActivitiesFragmentToReadPostFragment()
+        action.post = postEntity
+        Navigation.findNavController(view).navigate(action)
 
     }
 

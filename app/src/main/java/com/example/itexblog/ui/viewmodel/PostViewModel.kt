@@ -8,6 +8,10 @@ import com.example.itexblog.ui.model.PostEntityWithCommentEntity
 import com.example.itexblog.ui.model.PostRepository
 import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 
+/**
+ * A view model to handle data between model and view
+ */
+
 class PostViewModel(application: Application): AndroidViewModel(application) {
 
     private var repository = PostRepository(application)

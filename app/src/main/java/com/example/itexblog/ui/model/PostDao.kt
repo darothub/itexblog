@@ -3,6 +3,10 @@ package com.example.itexblog.ui.model
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
+/**
+ * An interface to access data object via the database
+ * DAO(Data Access Object)
+ */
 @Dao
 interface PostDao {
 

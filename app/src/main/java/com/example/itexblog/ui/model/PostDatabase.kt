@@ -7,6 +7,10 @@ import androidx.room.RoomDatabase
 import com.example.itexblog.ui.model.commentmodel.CommentDao
 import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 
+/**
+ * Database to handle storage of data in their respective data class(table)
+ */
+
 @Database(entities = [PostEntity::class, CommentsEntity::class], version = 8, exportSchema = false)
 abstract class PostDatabase:RoomDatabase() {
 

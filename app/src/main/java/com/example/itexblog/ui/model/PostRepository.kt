@@ -6,6 +6,10 @@ import com.example.itexblog.ui.model.commentmodel.CommentDao
 import com.example.itexblog.ui.model.commentmodel.CommentsEntity
 import com.example.itexblog.ui.utils.CoroutineTaskSingleton
 
+/**
+ * A source of data for the view model
+ */
+
 class PostRepository(application: Application) {
 
     fun insert(post: PostEntity?, application: Application){

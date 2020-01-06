@@ -4,6 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
+/**
+ * A data class(table/schema) for posts
+ */
+
 @Entity
 class PostEntity(
     var title: String,

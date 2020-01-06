@@ -116,7 +116,7 @@ class AddPostFragment : Fragment() {
             }
 
 
-            //On click listerner for update request
+            //On-click listerner for update request
             update_post_btn.setOnClickListener {view ->
 
                 val title = title.text.toString()
@@ -163,17 +163,17 @@ class AddPostFragment : Fragment() {
         }
 
 
-        //On click listener to open gallery
+        //On-click listener to open gallery
         addImageBtn.setOnClickListener {
             openGallery()
         }
 
-        // On click listener to open camera
+        // On-click listener to open camera
         cameraBtn.setOnClickListener {
             openCamera()
         }
 
-        //On click listener to submit new post
+        //On-click listener to submit new post
         submit_post_btn.setOnClickListener {
             val title = title.text.toString()
             val body = body.text.toString()
@@ -231,6 +231,7 @@ class AddPostFragment : Fragment() {
 
     }
 
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -258,6 +259,9 @@ class AddPostFragment : Fragment() {
     //Custom function to open gallery
     private fun openGallery(){
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//        intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+//        intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
         intent.type = "image/*"
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
@@ -309,9 +313,11 @@ class AddPostFragment : Fragment() {
                 //Extract Uri version from data
                 val imageUri = data!!.data
 
+
                 //Get absolute path and store it
                 imagePath = FileUtils.getPath(context, imageUri)
                 imageUriLoader = imageUri
+
 
 
 

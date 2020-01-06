@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_read_post.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -59,7 +60,7 @@ class ReadPostFragment : Fragment() {
             incomingPost =  ReadPostFragmentArgs.fromBundle(it).post
         }
 
-        read_title.text = incomingPost?.title
+        read_title.text = incomingPost?.title?.toUpperCase(Locale.UK)
         read_date.text = incomingPost?.date
         read_body.setText(incomingPost?.body)
         read_num_of_likes.setText(incomingPost?.likes.toString())
@@ -89,7 +90,7 @@ class ReadPostFragment : Fragment() {
             postViewModel!!.getAllCommentsByIdLive(Application(), it)?.observe(this, object:
                 Observer<List<CommentsEntity?>?> {
                 override fun onChanged(commentsEntity: List<CommentsEntity?>?) {
-                    Toast.makeText(context, "$commentsEntity", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "$commentsEntity", Toast.LENGTH_SHORT).show()
 
     //                comment_recyclerView2.visibility = View.VISIBLE
                     comment_recyclerView2.layoutManager = LinearLayoutManager(context)
@@ -198,10 +199,13 @@ class ReadPostFragment : Fragment() {
 
     }
 
+    //Navigate to Blog post activity after post
     private fun toBlogPost(view: View){
         val action = ReadPostFragmentDirections.toBlogPost()
         Navigation.findNavController(view).navigate(action)
     }
+
+    //Function to delete a post
     private fun toDelete(context: Context, postEntity: PostEntity?):Boolean{
         return try{
             postEntity?.let{
@@ -219,6 +223,8 @@ class ReadPostFragment : Fragment() {
         }
 
     }
+
+    //Function to toggle comments
     private fun seeComments(){
         if (comment_recyclerView2.visibility == View.VISIBLE){
             comment_recyclerView2.visibility = View.GONE
