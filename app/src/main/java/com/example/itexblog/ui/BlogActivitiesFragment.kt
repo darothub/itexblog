@@ -3,6 +3,8 @@ package com.example.itexblog.ui
 
 import android.app.AlertDialog
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,6 +35,10 @@ class BlogActivitiesFragment : Fragment() {
 
     private var postViewModel: PostViewModel?= null
     private var adapter:PostAdapter? = null
+    var mActivity:MainActivity?=null
+
+    var value:Boolean =false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +50,37 @@ class BlogActivitiesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+
+
+
+
+        blog_activity_toolbar.setOnMenuItemClickListener{
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            val valueB = sharedPref!!.getBoolean("NewTheme", false)
+
+            when(it.itemId){
+                R.id.theme ->{
+
+                    value = !valueB
+
+                    sharedPref.edit()
+                        ?.apply {
+                            putBoolean("NewTheme", value)
+                            apply()
+
+                        }
+
+                    Toast.makeText(context, "hey ${value}", Toast.LENGTH_LONG).show()
+                    activity?.startActivity(Intent(context, MainActivity::class.java))
+//
+                    true
+                }
+                else -> false
+            }
+        }
+
+
 
 
         //View model to observe live data
@@ -83,7 +120,7 @@ class BlogActivitiesFragment : Fragment() {
                     }
 
 
-                })
+                }, activity!!)
                 //Connecting recycler view to adapter
                 recyclerView.adapter = adapter
                 adapter?.setPost(postEntity)
@@ -123,7 +160,7 @@ class BlogActivitiesFragment : Fragment() {
                         Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
                     }
                     setNegativeButton("No"){_, _ ->
-                        findNavController().navigate(R.id.blogActivitiesFragment)
+                        refresh()
 
                     }
 
@@ -167,6 +204,12 @@ class BlogActivitiesFragment : Fragment() {
         Navigation.findNavController(view).navigate(action)
 
     }
+
+    private fun refresh(){
+        findNavController().navigate(R.id.blogActivitiesFragment)
+    }
+
+
 
 
 

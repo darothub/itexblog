@@ -17,6 +17,21 @@
 
     </style>
 
+    <style name="OtherTheme" parent="AppTheme.NoActionBar" >
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/secondChoice</item>
+        <item name="colorAccent">@color/secondChoice</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="buttonBarStyle">@style/MyButtonStyle</item>
+
+    </style>
+
+    <style name="MyButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/secondChoice</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
     <style name="Divider" parent="AppTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>

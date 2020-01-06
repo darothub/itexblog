@@ -27,7 +27,8 @@ interface PostDao {
     fun getPostWithComments():LiveData<List<PostEntityWithCommentEntity>>?
 
     @get:Query(
-        "SELECT * FROM postentity"
+        "SELECT * FROM postentity ORDER BY id DESC"
     )
     val allPosts: LiveData<List<PostEntity?>?>?
 }
+

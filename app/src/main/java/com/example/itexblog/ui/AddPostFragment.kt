@@ -24,7 +24,6 @@ import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostDatabase
 import com.example.itexblog.ui.model.PostEntity
 import com.example.itexblog.ui.model.commentmodel.CommentsEntity
-import com.example.itexblog.ui.utils.FileUtils
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_add_post.*
@@ -69,6 +68,13 @@ class AddPostFragment : Fragment() {
             addComment = AddPostFragmentArgs.fromBundle(it).addComment
         }
 
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val changeTheme = sharedPref?.getBoolean("NewTheme", false)
+        if(changeTheme!!){
+            submit_post_btn.setBackgroundColor(resources.getColor(R.color.secondChoice) )
+            update_post_btn.setBackgroundColor(resources.getColor(R.color.secondChoice) )
+            add_comment_btn.setBackgroundColor(resources.getColor(R.color.secondChoice) )
+        }
 
         //Attaching navigation to the app bar and toolbar
         val nav = Navigation.findNavController(add_post_appbar)
@@ -314,8 +320,8 @@ class AddPostFragment : Fragment() {
                 val imageUri = data!!.data
 
 
-                //Get absolute path and store it
-                imagePath = FileUtils.getPath(context, imageUri)
+//                //Get absolute path and store it
+//                imagePath = FileUtils.getPath(context, imageUri)
                 imageUriLoader = imageUri
 
 

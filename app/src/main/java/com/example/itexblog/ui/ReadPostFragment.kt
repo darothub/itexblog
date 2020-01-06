@@ -57,6 +57,9 @@ class ReadPostFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
+        //change theme on request
+        PostAdapter.PostHolder(view!!).changeThemeForView(activity!!, read_comments)
+
         //Receives arguments from other fragment
         arguments?.let{
             incomingPost =  ReadPostFragmentArgs.fromBundle(it).post

@@ -4,15 +4,15 @@
 
     <item
 
-        android:title="@string/profile"
-        android:id="@+id/profile"
-        android:tooltipText="@string/profile"
+        android:title="@string/theme"
+        android:id="@+id/theme"
+        android:tooltipText="@string/theme"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/signOutBtn"
+        android:id="@+id/deleteAll"
         android:icon="@drawable/ic_more_"
-        android:title="@string/Logout"
+        android:title="@string/deleteall"
         android:visible="true" />
 
 

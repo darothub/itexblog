@@ -1,6 +1,7 @@
 package com.example.itexblog.ui.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostDatabase
@@ -21,7 +23,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 
 
-class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnPostListener):RecyclerView.Adapter<PostAdapter.PostHolder>() {
+class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnPostListener, val activity: FragmentActivity):RecyclerView.Adapter<PostAdapter.PostHolder>() {
     //To inflate post row in the recycler view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
 
@@ -49,7 +51,7 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
         posts?.let{
             val currentPost = it[position]
-            holder.bind(it[position], listener)
+            holder.bind(it[position], listener, activity)
         }
 
 
@@ -65,14 +67,15 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
         var num_of_likes = itemView.findViewById<TextView>(R.id.num_of_likes)
         var post_date =itemView.findViewById<TextView>(R.id.post_date)
         var divider = itemView.findViewById<View>(R.id.divider2)
-        var deleteBtn = itemView.findViewById<View>(R.id.delete_btn)
+        var deleteBtn = itemView.findViewById<ImageView>(R.id.delete_btn)
         var likeBtn = itemView.findViewById<ImageView>(R.id.like_btn)
         var postComments = itemView.findViewById<TextView>(R.id.post_comments)
+        var editBtn = itemView.findViewById<ImageView>(R.id.edit_btn)
 
 
 
         //Function to bind each post with a listener for click
-        fun bind(postEntity: PostEntity?, listener: OnPostListener){
+        fun bind(postEntity: PostEntity?, listener: OnPostListener, activity: FragmentActivity){
             val postViewModel: PostViewModel?= null
             title.setText(postEntity?.title)
             body.setText(postEntity?.body)
@@ -95,6 +98,9 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
                 postComments.setText("$numOfComments Comments")
             }
 
+
+
+            changeThemeForView(activity, likeBtn, deleteBtn, editBtn, postComments)
 
 
             //when post image is not null
@@ -137,6 +143,24 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
             Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
             CoroutineScope(IO).launch {
                 PostDatabase.getInstance(context)?.postDao()?.update(postEntity)
+            }
+
+        }
+
+        fun changeThemeForView(activity: FragmentActivity, vararg views: View){
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            val changeTheme = sharedPref?.getBoolean("NewTheme", false)
+
+            for(view in views){
+                if(changeTheme!! && view is TextView){
+                    view.setTextColor(Color.parseColor("#60c090"))
+                }
+                else if(changeTheme!! && view is ImageView){
+                    view.drawable.setTint(Color.parseColor("#60c090"))
+                }
+                else if(!changeTheme && view is ImageView){
+                    view.drawable.setTint(Color.parseColor("#406a99"))
+                }
             }
 
         }
