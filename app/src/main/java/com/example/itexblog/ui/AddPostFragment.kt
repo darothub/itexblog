@@ -227,13 +227,6 @@ class AddPostFragment : Fragment() {
                 loadImage(requestCode, image_placeholder, it, data)
             }
         }
-//        if(ContextCompat.checkSelfPermission(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//            != PackageManager.PERMISSION_GRANTED){
-//            Toast.makeText(context, "You need to grant storage permission", Toast.LENGTH_SHORT).show()
-//        }
-//        context?.let{
-//            loadImage(requestCode, image_placeholder, it, data)
-//        }
 
     }
 
@@ -289,7 +282,7 @@ class AddPostFragment : Fragment() {
             startActivityForResult(intent, CAMERA_REQUEST)
         }
         catch (e:Exception){
-            Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -340,7 +333,7 @@ class AddPostFragment : Fragment() {
         }
         catch (e:Exception){
 
-            Log.i("Picture/Camera", "Please try again: ${e.message}")
+            Log.i("Picture/Camera", "Please try again")
 //            Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
         }
         //When image is from the camera
@@ -358,7 +351,7 @@ class AddPostFragment : Fragment() {
                 postViewModel!!.insert(post, application)
             }
             catch (e:Exception){
-                Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
             }
             return true
 
@@ -391,11 +384,12 @@ class AddPostFragment : Fragment() {
                 }
 
             } catch (e:Exception){
-                Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
             }
             true
 
         }else{
+            Toast.makeText(context, "Empty field error", Toast.LENGTH_LONG).show()
             false
         }
     }
@@ -408,7 +402,7 @@ class AddPostFragment : Fragment() {
             true
         } catch(e:Exception) {
 
-            Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
             removedImage = false
             false
         }
@@ -432,6 +426,7 @@ class AddPostFragment : Fragment() {
             return true
 
         }else{
+            Toast.makeText(context, "Empty field error", Toast.LENGTH_LONG).show()
             return false
         }
 
