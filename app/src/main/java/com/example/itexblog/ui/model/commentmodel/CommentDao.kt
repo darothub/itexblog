@@ -18,7 +18,7 @@ interface CommentDao {
     suspend fun deleteAllComments()
 
     @get:Query(
-        "SELECT * FROM commentsentity"
+        "SELECT * FROM commentsentity "
     )
     val allComments: LiveData<List<CommentsEntity?>?>?
 
@@ -28,6 +28,6 @@ interface CommentDao {
     @Query("SELECT * FROM commentsentity WHERE post_id = :id")
     suspend fun getCommentById(id:Int):List<CommentsEntity>
 
-    @Query("SELECT * FROM commentsentity WHERE post_id = :id")
+    @Query("SELECT * FROM commentsentity WHERE post_id = :id ORDER BY id DESC")
     fun getCommentByIdLive(id:Int):LiveData<List<CommentsEntity?>?>?
 }

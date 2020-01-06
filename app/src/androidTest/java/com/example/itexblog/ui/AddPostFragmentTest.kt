@@ -9,7 +9,17 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class BlogActivitiesFragmentTest {
+class AddPostFragmentTest{
+
+//    @Test
+//    fun testEventFragment(){
+//        val factory = FragmentFactory()
+//        val scenario = launchFragmentInContainer<AddPostFragment>()
+//
+//        Espresso.onView(withId(R.id.body))
+//            .check(ViewAssertions.matches(withHint("Body")))
+//
+//    }
 
 
     @Test
@@ -41,6 +51,4 @@ class BlogActivitiesFragmentTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
 
     }
-
-
 }
