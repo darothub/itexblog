@@ -78,7 +78,7 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$j_unit_rulesversion"
     androidTestImplementation "androidx.test:rules:$j_unit_rulesversion"
 
-    debugImplementation ("androidx.fragment:fragment-testing:$fragment_version",{
+    debugImplementation("androidx.fragment:fragment-testing:$fragment_version", {
         exclude group: 'androidx.test', module: 'core'
     })
 

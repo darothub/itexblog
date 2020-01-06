@@ -1,0 +1,55 @@
+package com.example.itexblog.ui
+
+import android.content.Context
+import android.content.Intent
+import android.content.res.Resources
+import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.example.itexblog.R
+import kotlinx.android.synthetic.main.activity_splash_screen.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+class SplashScreenActivity : AppCompatActivity() {
+    var changeTheme = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        changeTheme = sharedPref.getBoolean("NewTheme", false)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash_screen)
+
+        CoroutineScope(Main).launch {
+            try{
+                delay(1000)
+                logo.visibility = View.GONE
+                delay(2000)
+                logo.visibility = View.VISIBLE
+                delay(1000)
+                logo.visibility = View.GONE
+                delay(2000)
+                logo.visibility = View.VISIBLE
+                delay(3000)
+                startActivity(Intent(applicationContext, MainActivity::class.java))
+                finish()
+            }
+            catch (e:Exception){
+
+            }
+        }
+    }
+
+    override fun getTheme(): Resources.Theme {
+
+        val theme = super.getTheme()
+        if (changeTheme) {
+            theme.applyStyle(R.style.OtherTheme, true)
+        }
+
+        return theme
+
+    }
+}
