@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -42,7 +43,7 @@ class AddPostFragment : Fragment() {
 
     private var imageUriLoader: Uri?=null
     private var incomingPost:PostEntity?=null
-    private var removedImage:Boolean?=null
+    private var removedImage:Boolean?=false
     private var imagePath:String?=null
     private var imageFile:File? = null
     private var currentDate:String? = null
@@ -95,6 +96,19 @@ class AddPostFragment : Fragment() {
             true
         }
 
+
+        //Manipulate progress bar
+        add_post_progress.max = 200
+        body.doOnTextChanged { text, start, count, after ->
+            if(count != 200){
+                add_post_progress.progress = text?.length!!
+                text_length_advice.visibility = View.VISIBLE
+
+//                Toast.makeText(context, "${text.length}", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
         //PostViewModel to observe new changes
         postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
 
@@ -125,20 +139,24 @@ class AddPostFragment : Fragment() {
             //On-click listerner for update request
             update_post_btn.setOnClickListener {view ->
 
+
+
                 val title = title.text.toString()
                 val body = body.text.toString()
                 val id = incomingPost?.id
 
                 val updateRequestResult = updatePost(Application(), title, body,
                     if(imageUriLoader.toString() != "null") imageUriLoader.toString()
-                    else if(removeImage(image_placeholder)) "null" else incomingPost?.image,
+                    else if(image_placeholder.visibility == View.GONE) "null"
+                    else incomingPost?.image,
                     id)
+                Toast.makeText(context, "Post title: ${incomingPost?.title}  is updated", Toast.LENGTH_SHORT).show()
 
                 //When update is successful
                 if(updateRequestResult){
                     val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
                     Navigation.findNavController(view).navigate(action)
-                    Toast.makeText(context, "post with ${incomingPost?.title } and ${incomingPost?.id } is updated", Toast.LENGTH_SHORT).show()
+
                 }
 
 
@@ -227,6 +245,7 @@ class AddPostFragment : Fragment() {
                 loadImage(requestCode, image_placeholder, it, data)
             }
         }
+
 
     }
 

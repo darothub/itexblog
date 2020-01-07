@@ -24,7 +24,6 @@ import com.example.itexblog.ui.adapters.PostAdapter
 import com.example.itexblog.ui.model.PostDatabase
 import com.example.itexblog.ui.model.PostEntity
 import com.example.itexblog.ui.model.commentmodel.CommentsEntity
-import com.example.itexblog.ui.utils.FileUtils
 import com.example.itexblog.ui.viewmodel.PostViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_read_post.*
@@ -76,7 +75,7 @@ class ReadPostFragment : Fragment() {
         if(incomingPost?.image != "null") {
             incomingPost?.image?.let {
                 val stringImageToUri = Uri.parse(it)
-                val imagePath = FileUtils.getPath(context, stringImageToUri)
+//                val imagePath = FileUtils.getPath(context, stringImageToUri)
 //                val imageFile = File(imagePath)
 
                 Picasso.get().load(stringImageToUri).into(read_image)
@@ -104,7 +103,7 @@ class ReadPostFragment : Fragment() {
                     //An instance of the adapter
                     commentAdapter = CommentAdapter(commentsEntity, object :CommentAdapter.OnCommentListener{
                         override fun onCommentClick(comment: CommentsEntity?) {
-                            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
                         }
 
                     })
@@ -156,11 +155,11 @@ class ReadPostFragment : Fragment() {
                 i = 0
             }
             if(i == 1){
-                Toast.makeText(context, "Single Clicked", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "Single Clicked", Toast.LENGTH_SHORT).show()
                 handler.postDelayed(runn, 400)
             }
             else if(i == 2){
-                Toast.makeText(context, "Double Clicked", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "Double Clicked", Toast.LENGTH_SHORT).show()
                 //update post
                 PostAdapter.PostHolder(view!!).likesCount(incomingPost, context!!)
                 read_num_of_likes.setText(incomingPost?.likes.toString())
@@ -234,7 +233,7 @@ class ReadPostFragment : Fragment() {
             true
         } catch(e:Exception) {
 
-            Toast.makeText(context, "Please try again: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
 
             false
         }
