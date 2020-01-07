@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -93,6 +94,18 @@ class AddPostFragment : Fragment() {
                 }
             }
             true
+        }
+
+
+        add_post_progress.max = 200
+        body.doOnTextChanged { text, start, count, after ->
+            if(count != 200){
+                add_post_progress.progress = text?.length!!
+                text_length_advice.visibility = View.VISIBLE
+
+                Toast.makeText(context, "${text.length}", Toast.LENGTH_SHORT).show()
+
+            }
         }
 
         //PostViewModel to observe new changes
@@ -227,6 +240,7 @@ class AddPostFragment : Fragment() {
                 loadImage(requestCode, image_placeholder, it, data)
             }
         }
+
 
     }
 

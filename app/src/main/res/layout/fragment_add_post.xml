@@ -56,15 +56,34 @@
                 android:layout_height="wrap_content"
                 android:gravity="top"
                 android:hint="Body"
+                android:background="@null"
                 android:inputType="text|textMultiLine"
                 android:maxLength="200" />
         </com.google.android.material.textfield.TextInputLayout>
+        <ProgressBar
+            android:id="@+id/add_post_progress"
+            android:layout_below="@id/post_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <TextView
+            android:layout_below="@id/add_post_progress"
+            android:id="@+id/text_length_advice"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginBottom="5dp"
+            android:text="Text maximum length is 200"/>
 
         <ImageView
             android:id="@+id/image_placeholder"
             android:layout_width="300dp"
             android:layout_height="200dp"
-            android:layout_below="@id/post_input"
+            android:layout_below="@id/text_length_advice"
             android:scaleType="centerCrop"
             android:visibility="gone"
             android:layout_centerHorizontal="true"
