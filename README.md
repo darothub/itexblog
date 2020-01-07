@@ -1,4 +1,4 @@
-#Itex Blog Application
+# Itex Blog Application
 
 This a demo application for user to be able to dynamically create, read, update and delete blog posts.
 
@@ -10,9 +10,9 @@ To make the application fun for a single user, the application has functionality
 
 User also has the choice of switching themes by clicking on the **Change theme option** there is always a new theme even after the first click.
 
-*NB: Only two themes are supported in this version.*
+*NB: Only two themes are supported in this demo.*
 
-###Features
+### Features
 - Create blog posts.
 - Read blog posts.
     - Swipe right/Click on post
@@ -22,7 +22,7 @@ User also has the choice of switching themes by clicking on the **Change theme o
 - Delete blog posts.
     - Swipe left/Click on delete icon(after reading)
 
-##Getting Started
+## Getting Started
 
 - The first step is to clone/download this repository
 
