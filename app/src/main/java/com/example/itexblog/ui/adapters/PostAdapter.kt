@@ -140,7 +140,7 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
         //Custom to handle like button on click
         fun likesCount(postEntity: PostEntity?, context: Context){
             postEntity!!.likes = postEntity.likes?.plus(1)
-            Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "${postEntity.likes}", Toast.LENGTH_SHORT).show()
             CoroutineScope(IO).launch {
                 PostDatabase.getInstance(context)?.postDao()?.update(postEntity)
             }
