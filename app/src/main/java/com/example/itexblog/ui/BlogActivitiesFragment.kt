@@ -105,7 +105,7 @@ class BlogActivitiesFragment : Fragment() {
             }
         }
 
-        Toast.makeText(context, "$value", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "$value", Toast.LENGTH_SHORT).show()
 
 
         if(!value){
