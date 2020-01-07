@@ -53,6 +53,8 @@ class BlogActivitiesFragment : Fragment() {
 
 
 
+        //View model to observe live data
+        postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
 
 
         blog_activity_toolbar.setOnMenuItemClickListener{
@@ -71,9 +73,26 @@ class BlogActivitiesFragment : Fragment() {
 
                         }
 
-                    Toast.makeText(context, "hey ${value}", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(context, "hey ${value}", Toast.LENGTH_LONG).show()
                     activity?.startActivity(Intent(context, MainActivity::class.java))
 //
+                    true
+                }
+                R.id.deleteAll ->{
+                    AlertDialog.Builder(context).apply {
+                        setTitle("Are you sure?")
+                        setMessage("You cannot undo this operation")
+                        setPositiveButton("Yes"){_, _ ->
+                            postViewModel?.deleteAll(Application())
+                            Toast.makeText(context, "All posts deleted", Toast.LENGTH_SHORT).show()
+                        }
+                        setNegativeButton("No"){_, _ ->
+                            refresh()
+
+                        }
+
+
+                    }.create().show()
                     true
                 }
                 else -> false
@@ -83,8 +102,7 @@ class BlogActivitiesFragment : Fragment() {
 
 
 
-        //View model to observe live data
-        postViewModel= ViewModelProviders.of(this).get(PostViewModel::class.java)
+
 
         //Getting current day
         val sdf =SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
