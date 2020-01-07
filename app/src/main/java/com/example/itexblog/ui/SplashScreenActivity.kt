@@ -24,15 +24,16 @@ class SplashScreenActivity : AppCompatActivity() {
 
         CoroutineScope(Main).launch {
             try{
-                delay(1000)
-                logo.visibility = View.GONE
-                delay(2000)
                 logo.visibility = View.VISIBLE
-                delay(1000)
-                logo.visibility = View.GONE
                 delay(2000)
+                logo.visibility = View.GONE
+                delay(1000)
                 logo.visibility = View.VISIBLE
-                delay(3000)
+                delay(2000)
+                logo.visibility = View.GONE
+                delay(1000)
+                logo.visibility = View.VISIBLE
+                delay(2000)
                 startActivity(Intent(applicationContext, MainActivity::class.java))
                 finish()
             }
