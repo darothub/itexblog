@@ -187,6 +187,9 @@ class ReadPostFragment : Fragment() {
                     Navigation.findNavController(view!!).navigate(action)
 
                 }
+                R.id.exit ->{
+                    findNavController().navigate(R.id.blogActivitiesFragment)
+                }
             }
             true
         }

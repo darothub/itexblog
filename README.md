@@ -1,3 +1,4 @@
+
 # Itex Blog Application
 
 This a demo application for user to be able to dynamically create, read, update and delete blog posts.
@@ -33,3 +34,5 @@ User also has the choice of switching themes by clicking on the **Change theme o
 - Goto Buil -> Rebuild
 
 - Run -> Run app/Shift+F10
+
+
