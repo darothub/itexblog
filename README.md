@@ -15,9 +15,12 @@ User also has the choice of switching themes by clicking on the **Change theme o
 ###Features
 - Create blog posts.
 - Read blog posts.
+    - Swipe right/Click on post
 - Like blog posts.
+    - Click on the like button/Double click(after reading)
 - Edit and update blog post.
 - Delete blog posts.
+    - Swipe left/Click on delete icon(after reading)
 
 ##Getting Started
 

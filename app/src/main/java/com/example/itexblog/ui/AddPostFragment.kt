@@ -97,6 +97,7 @@ class AddPostFragment : Fragment() {
         }
 
 
+        //Manipulate progress bar
         add_post_progress.max = 200
         body.doOnTextChanged { text, start, count, after ->
             if(count != 200){
@@ -144,14 +145,15 @@ class AddPostFragment : Fragment() {
 
                 val updateRequestResult = updatePost(Application(), title, body,
                     if(imageUriLoader.toString() != "null") imageUriLoader.toString()
-                    else if(removeImage(image_placeholder)) "null" else incomingPost?.image,
+                    else if((incomingPost?.image == "null" && imageUriLoader.toString() == "null") || removeImage(image_placeholder)) "null" else incomingPost?.image,
                     id)
+                Toast.makeText(context, "post with ${imageUriLoader.toString() }  is updated", Toast.LENGTH_SHORT).show()
 
                 //When update is successful
                 if(updateRequestResult){
                     val action = AddPostFragmentDirections.actionGlobalBlogActivitiesFragment()
                     Navigation.findNavController(view).navigate(action)
-                    Toast.makeText(context, "post with ${incomingPost?.title } and ${incomingPost?.id } is updated", Toast.LENGTH_SHORT).show()
+
                 }
 
 
