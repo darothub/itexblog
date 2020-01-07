@@ -32,7 +32,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,8 +43,6 @@ class AddPostFragment : Fragment() {
     private var imageUriLoader: Uri?=null
     private var incomingPost:PostEntity?=null
     private var removedImage:Boolean?=false
-    private var imagePath:String?=null
-    private var imageFile:File? = null
     private var currentDate:String? = null
     private var addComment:Boolean?=null
     private var dataIntent:Intent?=null
@@ -69,12 +66,18 @@ class AddPostFragment : Fragment() {
             addComment = AddPostFragmentArgs.fromBundle(it).addComment
         }
 
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = activity?.getSharedPreferences("secret", Context.MODE_PRIVATE)
         val changeTheme = sharedPref?.getBoolean("NewTheme", false)
         if(changeTheme!!){
             submit_post_btn.setBackgroundColor(resources.getColor(R.color.secondChoice) )
             update_post_btn.setBackgroundColor(resources.getColor(R.color.secondChoice) )
             add_comment_btn.setBackgroundColor(resources.getColor(R.color.secondChoice) )
+            add_post_parent_view.setBackgroundResource(R.drawable.ic_backgr)
+
+
+        }
+        else{
+            add_post_parent_view.setBackgroundResource(R.drawable.ic_backgr_other)
         }
 
         //Attaching navigation to the app bar and toolbar
@@ -98,9 +101,9 @@ class AddPostFragment : Fragment() {
 
 
         //Manipulate progress bar
-        add_post_progress.max = 200
+        add_post_progress.max = 400
         body.doOnTextChanged { text, start, count, after ->
-            if(count != 200){
+            if(count != 400){
                 add_post_progress.progress = text?.length!!
                 text_length_advice.visibility = View.VISIBLE
 

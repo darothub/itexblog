@@ -148,7 +148,7 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
         }
 
         fun changeThemeForView(activity: FragmentActivity, vararg views: View){
-            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            val sharedPref = activity?.getSharedPreferences("secret", Context.MODE_PRIVATE)
             val changeTheme = sharedPref?.getBoolean("NewTheme", false)
 
             for(view in views){

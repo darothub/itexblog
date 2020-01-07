@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = this.getSharedPreferences("secret", Context.MODE_PRIVATE)
         changeTheme = sharedPref.getBoolean("NewTheme", false)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,6 +27,14 @@ class MainActivity : AppCompatActivity() {
             R.id.fragment
         )
 
+        if(changeTheme){
+            sharedPref.edit()
+                ?.apply {
+                    putBoolean("NewTheme", changeTheme)
+                    commit()
+
+                }
+        }
 
 
     }

@@ -59,6 +59,18 @@ class ReadPostFragment : Fragment() {
         //change theme on request
         PostAdapter.PostHolder(view!!).changeThemeForView(activity!!, read_comments)
 
+        val sharedPref = activity?.getSharedPreferences("secret", Context.MODE_PRIVATE)
+        val changeTheme = sharedPref?.getBoolean("NewTheme", false)
+        if(changeTheme!!){
+
+            read_post_parent_view.setBackgroundResource(R.drawable.ic_backgr)
+
+
+        }
+        else{
+            read_post_parent_view.setBackgroundResource(R.drawable.ic_backgr_other)
+        }
+
         //Receives arguments from other fragment
         arguments?.let{
             incomingPost =  ReadPostFragmentArgs.fromBundle(it).post

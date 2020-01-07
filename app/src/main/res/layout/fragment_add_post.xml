@@ -2,8 +2,10 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_post_parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_backgr"
     tools:context=".ui.AddPostFragment">
 
 
@@ -24,6 +26,10 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:menu="@menu/add_post_menu" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat = "@drawable/bg_image"/>
 
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -75,7 +81,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_marginBottom="5dp"
-            android:text="Text maximum length is 200"/>
+            android:text="Text maximum length is 400"/>
 
         <ImageView
             android:id="@+id/image_placeholder"

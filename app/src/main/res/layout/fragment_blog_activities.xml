@@ -2,15 +2,17 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/blog_parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_image"
+    android:background="@drawable/ic_backgr"
     tools:context=".ui.BlogActivitiesFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/post_appbar"
         android:layout_width="match_parent"
         android:fitsSystemWindows="true"
+        android:background="@android:color/transparent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -24,6 +26,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/blog_activity_toolbar"
                 android:layout_width="match_parent"
+                android:background="@android:color/transparent"
                 android:layout_height="wrap_content"
                 app:menu="@menu/post_menu"
                 android:elevation="10dp"
@@ -31,8 +34,8 @@
 
                 <ImageView
                     android:id="@+id/itex_logo"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/blog_activity_toolbar"
                     android:scaleType="fitCenter"
                     app:layout_collapseMode="parallax"

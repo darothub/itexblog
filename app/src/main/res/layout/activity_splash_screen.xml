@@ -13,4 +13,12 @@
         android:layout_centerInParent="true"
         android:src="@drawable/itex" />
 
+    <TextView
+        android:id="@+id/splash_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:text="Create Read, Update and Delete"/>
+
 </RelativeLayout>

@@ -35,4 +35,7 @@ User also has the choice of switching themes by clicking on the **Change theme o
 
 - Run -> Run app/Shift+F10
 
+*PS: This application only support android versions from 5.1 upward*
+
+
 
