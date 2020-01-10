@@ -107,11 +107,20 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
             if(postEntity?.image != "null"){
                 stringImageToUri = Uri.parse(postEntity?.image)
 
-//                post_image.setImageURI(Uri.parse(postEntity?.image))
+                post_image.setImageURI(Uri.parse(postEntity?.image))
                 Picasso.get().load(stringImageToUri).into(post_image)
                 post_image.visibility = View.VISIBLE
                 divider.visibility = View.VISIBLE
+
+
+            }else{
+//                stringImageToUri = Uri.parse("content://com.android.providers.media.documents/document/image%3A39")
+//                val url = Uri.parse("content://media/external/images/media/33")
+//                Picasso.get().load(url).into(post_image)
+//                post_image.visibility = View.VISIBLE
+//                divider.visibility = View.VISIBLE
             }
+
             Log.i("imageUri", "$stringImageToUri")
 
             likeBtn.setOnClickListener{

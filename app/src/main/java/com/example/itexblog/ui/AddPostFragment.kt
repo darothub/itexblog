@@ -207,6 +207,7 @@ class AddPostFragment : Fragment() {
 
 
             val saveRequest = savePost(Application(), title, body, imageUriLoader.toString())
+            Log.i("savePost", imageUriLoader.toString())
 //            Toast.makeText(context, "${imageUriLoader.toString()} is updated", Toast.LENGTH_SHORT).show()
 
             //when post request is successful
@@ -267,8 +268,9 @@ class AddPostFragment : Fragment() {
                 if(grantResults.size > 0 && permissions[0].equals(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                     if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                         context?.let{
-                            loadImage(CAMERA_REQUEST, image_placeholder, it, dataIntent)
+
                             loadImage(GALLERY_REQUEST, image_placeholder, it, dataIntent)
+                            loadImage(CAMERA_REQUEST, image_placeholder, it, dataIntent)
                         }
                     }
                 }
@@ -319,11 +321,24 @@ class AddPostFragment : Fragment() {
                 val image = data!!.extras?.get("data") as Bitmap
 
                 //Show result in the image_placeholder
-                imageView.setImageBitmap(image)
+//                imageView.setImageBitmap(image)
                 imageView.visibility = View.VISIBLE
 
+
+
+                val uriEx = getImageUriFromBitmap(context, image)
+
+
+
+                Picasso.get().load(uriEx).into(imageView)
+//                imageView.setImageURI(uriEx)
+                val len = imageUriLoader.toString().length
+                val newImageUri = ("${imageUriLoader.toString().get(len-1)}${imageUriLoader.toString().get(len-2)}")
+
                 //Extract Uri version from Bitmap
-                imageUriLoader = getImageUriFromBitmap(context, image)
+                imageUriLoader = uriEx
+
+                Log.i("imagecontent", imageUriLoader.toString())
 
 
             }
@@ -341,7 +356,9 @@ class AddPostFragment : Fragment() {
 
 
 
+//                val url = "https://images.unsplash.com/photo-1499084732479-de2c02d45fcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
 
+                Log.i("imagecontentgal", "$imageUriLoader")
                 imageView.visibility = View.VISIBLE
 //                Picasso.get().load(imageUri).into(imageView)
                 imageView.setImageURI(imageUri)
