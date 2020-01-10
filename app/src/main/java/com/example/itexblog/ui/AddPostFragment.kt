@@ -103,8 +103,10 @@ class AddPostFragment : Fragment() {
         //Manipulate progress bar
         add_post_progress.max = 400
         body.doOnTextChanged { text, start, count, after ->
-            if(count != 400){
+            val max = 400
+            if(count != max){
                 add_post_progress.progress = text?.length!!
+                text_length_advice.setText("You have ${max.minus(text?.length)} words left")
                 text_length_advice.visibility = View.VISIBLE
 
 //                Toast.makeText(context, "${text.length}", Toast.LENGTH_SHORT).show()
