@@ -66,6 +66,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
                         android:layout_marginTop="5dp"
                         android:scaleType="fitXY"
                         android:visibility="gone"
@@ -80,12 +81,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/post_title"
-                        android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:gravity="start|end"
                         android:justificationMode="inter_word"
-                        android:minLines="5"
-                        android:maxLines="10"
+                        android:maxLines="5"
                         android:layout_marginEnd="5dp"
                         android:layout_toStartOf="@id/post_image"
                         android:text="@string/body_message"
@@ -96,12 +95,15 @@
                         android:id="@+id/divider2"
                         style="@style/Divider"
                         android:visibility="gone"
+                        tools:visibility="visible"
                         android:layout_below="@id/post_image"
-                        android:layout_marginTop="5dp" />
+
+                        android:layout_marginTop="10dp" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/optionAct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/midcontent"

@@ -20,6 +20,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.itexblog.R
 import com.example.itexblog.ui.model.PostDatabase
@@ -46,6 +47,8 @@ class AddPostFragment : Fragment() {
     private var currentDate:String? = null
     private var addComment:Boolean?=null
     private var dataIntent:Intent?=null
+    private var max:Int?=null
+    private var textLength:Int?=null
 
     private var postViewModel: PostViewModel?= null
     override fun onCreateView(
@@ -95,6 +98,9 @@ class AddPostFragment : Fragment() {
                     }
 
                 }
+                R.id.exit ->{
+                    findNavController().navigateUp()
+                }
             }
             true
         }
@@ -103,10 +109,11 @@ class AddPostFragment : Fragment() {
         //Manipulate progress bar
         add_post_progress.max = 400
         body.doOnTextChanged { text, start, count, after ->
-            val max = 400
+            textLength = text?.length
+            max = 400
             if(count != max){
                 add_post_progress.progress = text?.length!!
-                text_length_advice.setText("You have ${max.minus(text?.length)} words left")
+                text_length_advice.setText("You have ${max?.minus(text?.length)} words left")
                 text_length_advice.visibility = View.VISIBLE
 
 //                Toast.makeText(context, "${text.length}", Toast.LENGTH_SHORT).show()
@@ -128,6 +135,7 @@ class AddPostFragment : Fragment() {
             body.setText(incomingPost?.body)
             update_post_btn.visibility = View.VISIBLE
             submit_post_btn.visibility = View.GONE
+
             if(incomingPost?.image !="null"){
                 val imageUri = Uri.parse(incomingPost?.image)
                 Picasso.get().load(imageUri).into(image_placeholder)
@@ -176,6 +184,9 @@ class AddPostFragment : Fragment() {
             body.setHint(resources.getString(R.string.comment))
             body.requestFocus()
             cameraBtn.visibility = View.GONE
+//            max = 200
+//            add_post_progress.max = max!!
+//            text_length_advice.setText("You have ${textLength?.let { max?.minus(it) }} words left")
 
 
             add_comment_btn.setOnClickListener {
@@ -455,6 +466,7 @@ class AddPostFragment : Fragment() {
 
         val sdf =SimpleDateFormat("dd/MM/yyyy hh:mm:ss" )
         val currentDate = sdf.format(Date())
+
 
         if(message.isNotEmpty()){
             try{

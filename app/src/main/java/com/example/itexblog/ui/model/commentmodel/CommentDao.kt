@@ -30,4 +30,5 @@ interface CommentDao {
 
     @Query("SELECT * FROM commentsentity WHERE post_id = :id ORDER BY id DESC")
     fun getCommentByIdLive(id:Int):LiveData<List<CommentsEntity?>?>?
+
 }
