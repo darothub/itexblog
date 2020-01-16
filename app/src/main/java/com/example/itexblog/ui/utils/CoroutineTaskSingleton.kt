@@ -23,6 +23,8 @@ class CoroutineTaskSingleton (application: Application) {
             }
     }
 
+
+
     fun insertTask(postDao:PostDao, post: PostEntity){
 
         CoroutineScope(Dispatchers.IO).launch {

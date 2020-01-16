@@ -250,12 +250,12 @@ class AddPostFragment : Fragment() {
 
         dataIntent = data
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE), 202)
+            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 202)
         }
         else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 200)
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 203)
         }
         else{
             context?.let{
@@ -278,7 +278,7 @@ class AddPostFragment : Fragment() {
 
         when(requestCode){
             202 -> {
-                if(grantResults.size > 0 && permissions[0].equals(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                if(grantResults.size > 0 && permissions[0].equals(android.Manifest.permission.READ_EXTERNAL_STORAGE)){
                     if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                         context?.let{
 
@@ -485,6 +485,7 @@ class AddPostFragment : Fragment() {
 
 
     }
+    
 
 
 }

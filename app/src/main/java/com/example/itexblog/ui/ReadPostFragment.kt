@@ -57,7 +57,7 @@ class ReadPostFragment : Fragment() {
 
 
         //change theme on request
-        PostAdapter.PostHolder(view!!).changeThemeForView(activity!!, read_comments)
+        PostAdapter.PostHolder(view!!).changeThemeForView(activity!!, read_comments, read_num_of_likes)
 
         val sharedPref = activity?.getSharedPreferences("secret", Context.MODE_PRIVATE)
         val changeTheme = sharedPref?.getBoolean("NewTheme", false)

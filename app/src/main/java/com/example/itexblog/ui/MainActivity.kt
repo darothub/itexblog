@@ -10,6 +10,20 @@ import androidx.navigation.ui.NavigationUI
 import com.example.itexblog.R
 
 
+fun main(args:Array<String>){
+
+    val myNumbers = listOf<Int>(1, 2, 3, 5)
+
+    val smallNum = myNumbers.filter { it <= 2  }
+
+    for(num in smallNum){
+        println(num)
+    }
+
+    println("hello")
+}
+
+
 class MainActivity : AppCompatActivity() {
 
     var changeTheme = false

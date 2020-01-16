@@ -100,7 +100,7 @@ class PostAdapter(private var posts:List<PostEntity?>?, private var listener:OnP
 
 
 
-            changeThemeForView(activity, likeBtn, deleteBtn, editBtn, postComments)
+            changeThemeForView(activity, likeBtn, deleteBtn, editBtn, postComments, num_of_likes)
 
 
             //when post image is not null
